@@ -55,18 +55,14 @@ public class ClaimsService {
     public ResponseDTO getClaimTypes() throws JsonProcessingException {
         List<ClaimType>claimTypes=dataService.findAll();
         log.info("Fetched data from the db :{}",objectMapper.writeValueAsString(claimTypes));
-        var claimTypeResDTO = claimTypes.stream().map(claimType -> {
-            return modelMapper.map(claimType, ClaimTypeResDTO.class);
-        }).toList();
+        var claimTypeResDTO = claimTypes.stream().map(claimType -> modelMapper.map(claimType, ClaimTypeResDTO.class)).toList();
         return utilities.successResponse("Successfully retrieved claim types", claimTypeResDTO);
     }
 
     public ResponseDTO getRoles() {
         List<Roles>roles = dataService.findRoles();
         log.info("data {}", roles.size());
-        var retrievedRoles = roles.stream().map(role -> {
-            return modelMapper.map(role, RolesResDTO.class);
-        }).toList();
+        var retrievedRoles = roles.stream().map(role -> modelMapper.map(role, RolesResDTO.class)).toList();
         return utilities.successResponse("Successfully retrieved roles", retrievedRoles);
 
     }
@@ -74,9 +70,7 @@ public class ClaimsService {
     public ResponseDTO getClaimStatus() throws JsonProcessingException {
         List<ClaimStatus>claimStatusList = dataService.fetchAll();
         log.info("About to fetch claim status from the db : {}",objectMapper.writeValueAsString(claimStatusList));
-        var claimStatusResDTO =claimStatusList.stream().map(claimStatus -> {
-            return modelMapper.map(claimStatus, ClaimStatusResDTO.class);
-        }).toList();
+        var claimStatusResDTO =claimStatusList.stream().map(claimStatus -> modelMapper.map(claimStatus, ClaimStatusResDTO.class)).toList();
         return utilities.successResponse("Successfully retrieved claim status", claimStatusResDTO);
 
 
@@ -84,9 +78,7 @@ public class ClaimsService {
 
     public ResponseDTO getUsers() {
         List<Users>users = dataService.fetchUsers();
-        var userResDTO = users.stream().map(user ->{
-            return modelMapper.map(user, UserResDTO.class);
-        } ).toList();
+        var userResDTO = users.stream().map(user -> modelMapper.map(user, UserResDTO.class)).toList();
         return utilities.successResponse("Successfully retrieved users", userResDTO);
 
     }
