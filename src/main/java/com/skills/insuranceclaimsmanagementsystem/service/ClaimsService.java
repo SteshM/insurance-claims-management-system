@@ -1,9 +1,8 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimStatusResDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimTypeResDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.RolesResDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,8 @@ public class ClaimsService {
     private final Utilities utilities;
 
     ModelMapper modelMapper = new ModelMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
+
 
     public ResponseDTO submitClaim(ClaimRequestDTO claimRequestDTO) {
         ClaimType claimType = dataService.findByName(claimRequestDTO.getName());
@@ -51,24 +52,42 @@ public class ClaimsService {
         return utilities.successResponse("Successfully submitted a claim", claimResDto);
     }
 
-    public ResponseDTO getClaimTypes() {
+    public ResponseDTO getClaimTypes() throws JsonProcessingException {
         List<ClaimType>claimTypes=dataService.findAll();
-        var claimTypeResDTO =modelMapper.map(claimTypes,ClaimTypeResDTO.class);
+        log.info("Fetched data from the db :{}",objectMapper.writeValueAsString(claimTypes));
+        var claimTypeResDTO = claimTypes.stream().map(claimType -> {
+            return modelMapper.map(claimType, ClaimTypeResDTO.class);
+        }).toList();
         return utilities.successResponse("Successfully retrieved claim types", claimTypeResDTO);
     }
 
     public ResponseDTO getRoles() {
         List<Roles>roles = dataService.findRoles();
-        var retrievedRoles = modelMapper.map(roles, RolesResDTO.class);
+        log.info("data {}", roles.size());
+        var retrievedRoles = roles.stream().map(role -> {
+            return modelMapper.map(role, RolesResDTO.class);
+        }).toList();
         return utilities.successResponse("Successfully retrieved roles", retrievedRoles);
 
     }
 
-    public ResponseDTO getClaimStatus() {
+    public ResponseDTO getClaimStatus() throws JsonProcessingException {
         List<ClaimStatus>claimStatusList = dataService.fetchAll();
-        var claimStatusResDTO = modelMapper.map(claimStatusList, ClaimStatusResDTO.class);
+        log.info("About to fetch claim status from the db : {}",objectMapper.writeValueAsString(claimStatusList));
+        var claimStatusResDTO =claimStatusList.stream().map(claimStatus -> {
+            return modelMapper.map(claimStatus, ClaimStatusResDTO.class);
+        }).toList();
         return utilities.successResponse("Successfully retrieved claim status", claimStatusResDTO);
 
+
+    }
+
+    public ResponseDTO getUsers() {
+        List<Users>users = dataService.fetchUsers();
+        var userResDTO = users.stream().map(user ->{
+            return modelMapper.map(user, UserResDTO.class);
+        } ).toList();
+        return utilities.successResponse("Successfully retrieved users", userResDTO);
 
     }
 }

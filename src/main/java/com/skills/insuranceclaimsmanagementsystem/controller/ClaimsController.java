@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
@@ -21,7 +22,7 @@ public class ClaimsController {
     }
 
     @GetMapping("/claim-types")
-    public ResponseDTO getClaimTypes() {
+    public ResponseDTO getClaimTypes() throws JsonProcessingException {
         return claimsService.getClaimTypes();
     }
     @GetMapping("/roles")
@@ -29,8 +30,12 @@ public class ClaimsController {
         return claimsService.getRoles();
     }
     @GetMapping("/claim-status")
-    public ResponseDTO getClaimStatus() {
+    public ResponseDTO getClaimStatus() throws JsonProcessingException {
         return claimsService.getClaimStatus();
+    }
+    @GetMapping("/users")
+    public ResponseDTO getUsers() throws JsonProcessingException {
+        return claimsService.getUsers();
     }
 
 

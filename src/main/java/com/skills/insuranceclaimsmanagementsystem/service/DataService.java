@@ -1,13 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 
-import com.skills.insuranceclaimsmanagementsystem.models.ClaimStatus;
-import com.skills.insuranceclaimsmanagementsystem.models.ClaimType;
-import com.skills.insuranceclaimsmanagementsystem.models.Claims;
-import com.skills.insuranceclaimsmanagementsystem.models.Roles;
-import com.skills.insuranceclaimsmanagementsystem.repository.ClaimStatusRepo;
-import com.skills.insuranceclaimsmanagementsystem.repository.ClaimTypeRepo;
-import com.skills.insuranceclaimsmanagementsystem.repository.ClaimsRepo;
-import com.skills.insuranceclaimsmanagementsystem.repository.RolesRepo;
+import com.skills.insuranceclaimsmanagementsystem.models.*;
+import com.skills.insuranceclaimsmanagementsystem.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +14,7 @@ public class DataService {
     private final ClaimsRepo claimsRepo;
     private final ClaimStatusRepo claimStatusRepo;
     private final RolesRepo rolesRepo;
+    private final UserRepo userRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -48,5 +43,9 @@ public class DataService {
 
     public List<ClaimStatus> fetchAll() {
         return claimStatusRepo.findAll();
+    }
+
+    public List<Users> fetchUsers() {
+        return userRepo.findAll();
     }
 }

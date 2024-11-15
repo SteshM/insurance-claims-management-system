@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 public class ClaimStatusResDTO {
     private int id;
-    private String status;
+    private String name;
 }

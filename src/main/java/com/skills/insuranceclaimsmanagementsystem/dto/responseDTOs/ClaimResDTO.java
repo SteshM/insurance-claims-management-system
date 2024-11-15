@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter
 public class ClaimResDTO {
     private int id;
+    private String name;
 
 }

@@ -1,5 +1,5 @@
 INSERT INTO roles (name) VALUES ('insurer'), ('customer');
-INSERT INTO claim_types (name) VALUES ('medical'), ('vehicle'), ('property');
+INSERT INTO claim_types(name) VALUES ('medical'), ('vehicle'), ('property');
 INSERT INTO claim_status (name) VALUES ('pending'), ('approved'), ('rejected');
 INSERT INTO users (
     username,

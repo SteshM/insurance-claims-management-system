@@ -26,7 +26,7 @@ CREATE TABLE users (
 
 );
 
-CREATE TABLE claim_types (
+CREATE TABLE claim_types(
                              id SERIAL PRIMARY KEY,
                              name VARCHAR(50) UNIQUE NOT NULL,
                              active BOOLEAN DEFAULT TRUE,
