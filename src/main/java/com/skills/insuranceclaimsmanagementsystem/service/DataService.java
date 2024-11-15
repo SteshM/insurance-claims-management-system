@@ -3,9 +3,11 @@ package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.models.ClaimStatus;
 import com.skills.insuranceclaimsmanagementsystem.models.ClaimType;
 import com.skills.insuranceclaimsmanagementsystem.models.Claims;
+import com.skills.insuranceclaimsmanagementsystem.models.Roles;
 import com.skills.insuranceclaimsmanagementsystem.repository.ClaimStatusRepo;
 import com.skills.insuranceclaimsmanagementsystem.repository.ClaimTypeRepo;
 import com.skills.insuranceclaimsmanagementsystem.repository.ClaimsRepo;
+import com.skills.insuranceclaimsmanagementsystem.repository.RolesRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class DataService {
     private final ClaimTypeRepo claimTypeRepo;
     private final ClaimsRepo claimsRepo;
     private final ClaimStatusRepo claimStatusRepo;
+    private final RolesRepo rolesRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -36,5 +39,10 @@ public class DataService {
 
     public List<ClaimType> findAll() {
         return claimTypeRepo.findAll();
+    }
+
+    public List<Roles> findRoles() {
+        return rolesRepo.findAll();
+
     }
 }

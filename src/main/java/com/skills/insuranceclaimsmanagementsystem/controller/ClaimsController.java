@@ -24,6 +24,10 @@ public class ClaimsController {
     public ResponseDTO getClaimTypes() {
         return claimsService.getClaimTypes();
     }
+    @GetMapping("/roles")
+    public ResponseDTO getRoles() {
+        return claimsService.getRoles();
+    }
 
 
 
