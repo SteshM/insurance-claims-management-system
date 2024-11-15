@@ -53,7 +53,6 @@ CREATE TABLE claims (
                         claim_type_id INT NOT NULL REFERENCES claim_types(id) ON DELETE RESTRICT,
                         incident_date DATE NOT NULL,
                         amount_claimed NUMERIC(12, 2) NOT NULL,
-                        description TEXT,
                         status_id INT NOT NULL REFERENCES claim_status(id) ON DELETE RESTRICT,
                         active BOOLEAN DEFAULT TRUE,
                         dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -62,6 +61,14 @@ CREATE TABLE claims (
                         modifiedBy VARCHAR(50),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE attachments (
+                             id SERIAL PRIMARY KEY,
+                             claim_id INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,
+                             type VARCHAR(50),
+                             url VARCHAR(255) NOT NULL,
+                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
