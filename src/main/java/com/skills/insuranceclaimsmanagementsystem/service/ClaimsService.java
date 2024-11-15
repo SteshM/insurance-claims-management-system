@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class ClaimsService {
     private final DataService dataService;
     private final Utilities utilities;
 
-    ModelMapper modelMap = new ModelMapper();
+    ModelMapper modelMapper = new ModelMapper();
 
     public ResponseDTO submitClaim(ClaimRequestDTO claimRequestDTO) {
         ClaimType claimType = dataService.findByName(claimRequestDTO.getName());
@@ -55,20 +53,20 @@ public class ClaimsService {
 
     public ResponseDTO getClaimTypes() {
         List<ClaimType>claimTypes=dataService.findAll();
-        var claimTypeResDTO =modelMap.map(claimTypes,ClaimTypeResDTO.class);
+        var claimTypeResDTO =modelMapper.map(claimTypes,ClaimTypeResDTO.class);
         return utilities.successResponse("Successfully retrieved claim types", claimTypeResDTO);
     }
 
     public ResponseDTO getRoles() {
         List<Roles>roles = dataService.findRoles();
-        var retrievedRoles = modelMap.map(roles, RolesResDTO.class);
+        var retrievedRoles = modelMapper.map(roles, RolesResDTO.class);
         return utilities.successResponse("Successfully retrieved roles", retrievedRoles);
 
     }
 
     public ResponseDTO getClaimStatus() {
         List<ClaimStatus>claimStatusList = dataService.fetchAll();
-        var claimStatusResDTO = modelMap.map(claimStatusList, ClaimStatusResDTO.class);
+        var claimStatusResDTO = modelMapper.map(claimStatusList, ClaimStatusResDTO.class);
         return utilities.successResponse("Successfully retrieved claim status", claimStatusResDTO);
 
 
