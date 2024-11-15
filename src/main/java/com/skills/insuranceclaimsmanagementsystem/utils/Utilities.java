@@ -1,6 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.utils;
 
-import com.skills.insuranceclaimsmanagementsystem.dto.ResponseDTOs.ResponseDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

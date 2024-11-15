@@ -1,4 +1,4 @@
-package com.skills.insuranceclaimsmanagementsystem.dto.ResponseDTOs;
+package com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs;
 
 import lombok.Getter;
 import lombok.Setter;

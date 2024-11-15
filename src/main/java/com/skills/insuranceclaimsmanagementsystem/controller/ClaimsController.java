@@ -1,7 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
 
-import com.skills.insuranceclaimsmanagementsystem.dto.RequestDTOs.ClaimRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.ResponseDTOs.ResponseDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,12 @@ public class ClaimsController {
        return claimsService.submitClaim(claimRequestDTO);
 
     }
+
+    @GetMapping("/claim-types")
+    public ResponseDTO getClaimTypes() {
+        return claimsService.getClaimTypes();
+    }
+
 
 
 }

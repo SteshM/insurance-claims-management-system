@@ -9,6 +9,8 @@ import com.skills.insuranceclaimsmanagementsystem.repository.ClaimsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DataService {
@@ -30,5 +32,9 @@ public class DataService {
 
     public ClaimStatus findClaimStatusByName(String pending) {
        return claimStatusRepo.findByName(pending);
+    }
+
+    public List<ClaimType> findAll() {
+        return claimTypeRepo.findAll();
     }
 }

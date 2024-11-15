@@ -22,9 +22,8 @@ CREATE TABLE users (
                        createdBy VARCHAR(50),
                        dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        modifiedBy VARCHAR(50),
-                       role_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                       role_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT
+
 );
 
 CREATE TABLE claim_types (
@@ -53,15 +52,14 @@ CREATE TABLE claims (
                         claim_type_id INT NOT NULL REFERENCES claim_types(id) ON DELETE RESTRICT,
                         incident_date DATE NOT NULL,
                         amount_claimed NUMERIC(12, 2) NOT NULL,
-                        status_id INT NOT NULL REFERENCES claim_status(id) ON DELETE RESTRICT,
+                        claim_status_id INT NOT NULL REFERENCES claim_status(id) ON DELETE RESTRICT,
                         active BOOLEAN DEFAULT TRUE,
                         dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         createdBy VARCHAR(50),
                         dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        modifiedBy VARCHAR(50),
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        modifiedBy VARCHAR(50)
 );
+
 
 CREATE TABLE attachments (
                              id SERIAL PRIMARY KEY,

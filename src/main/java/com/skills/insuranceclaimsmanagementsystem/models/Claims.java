@@ -3,16 +3,14 @@ package com.skills.insuranceclaimsmanagementsystem.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.w3c.dom.Text;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Setter
 @Getter
+@Table(name = "claims")
 public class Claims {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +23,6 @@ public class Claims {
     private Date dateUpdated;
     private String createdBy;
     private String updatedBy;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "claim_status_id")
