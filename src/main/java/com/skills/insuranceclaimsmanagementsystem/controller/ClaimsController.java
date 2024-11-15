@@ -28,6 +28,10 @@ public class ClaimsController {
     public ResponseDTO getRoles() {
         return claimsService.getRoles();
     }
+    @GetMapping("/claim-status")
+    public ResponseDTO getClaimStatus() {
+        return claimsService.getClaimStatus();
+    }
 
 
 

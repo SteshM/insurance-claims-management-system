@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimStatusResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimTypeResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.RolesResDTO;
@@ -62,6 +63,14 @@ public class ClaimsService {
         List<Roles>roles = dataService.findRoles();
         var retrievedRoles = modelMap.map(roles, RolesResDTO.class);
         return utilities.successResponse("Successfully retrieved roles", retrievedRoles);
+
+    }
+
+    public ResponseDTO getClaimStatus() {
+        List<ClaimStatus>claimStatusList = dataService.fetchAll();
+        var claimStatusResDTO = modelMap.map(claimStatusList, ClaimStatusResDTO.class);
+        return utilities.successResponse("Successfully retrieved claim status", claimStatusResDTO);
+
 
     }
 }

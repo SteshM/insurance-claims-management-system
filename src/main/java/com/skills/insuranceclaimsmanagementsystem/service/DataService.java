@@ -45,4 +45,8 @@ public class DataService {
         return rolesRepo.findAll();
 
     }
+
+    public List<ClaimStatus> fetchAll() {
+        return claimStatusRepo.findAll();
+    }
 }
