@@ -2,6 +2,7 @@ package com.skills.insuranceclaimsmanagementsystem.service;
 
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.WorkflowRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkflowResDTO;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,11 @@ public class WorkflowService {
             return utilities.failedResponse(1,"Claim not found for the provided ID", null);
         }
         List<Workflow>history = dataService.fetchWorkflow();
-        list
+        List<WorkflowResDTO>workflowResDTOS = history.stream()
+                .map(
+                        workflow -> modelMapper.map(workflow, WorkflowResDTO.class)
+                ).toList();
+        return utilities.successResponse("successfully retrieved workflow", workflowResDTOS);
 
     }
 }
