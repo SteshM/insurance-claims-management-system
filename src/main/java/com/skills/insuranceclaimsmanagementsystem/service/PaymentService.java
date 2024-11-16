@@ -76,4 +76,18 @@ public class PaymentService {
         ).toList();
     return utilities.successResponse("Success", paymentResDTOS);
 }
+
+    public ResponseDTO getClaimPayments(int id) {
+        Optional<Claims> claimOptional = dataService.findByClaimId(id);
+
+        if (claimOptional.isEmpty()) {
+            return utilities.failedResponse(1,"Claim not found for the provided ID", null);
+        }
+        List<Payments>payments = dataService.fetchPayments();
+        List<PaymentResDTO>paymentResDTOList = payments.stream().map(
+                payments1 -> modelMapper.map(payments1, PaymentResDTO.class)
+        ).toList();
+        return utilities.successResponse("Success", paymentResDTOList);
+
+    }
 }
