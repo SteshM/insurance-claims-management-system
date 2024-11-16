@@ -19,6 +19,9 @@ public class DataService {
     private final AttachmentRepo attachmentRepo;
     private final PaymentStatusRepo paymentStatusRepo;
     private final PaymentsRepo paymentsRepo;
+    private final WorkflowRepo workflowRepo;
+    private final WorkflowStageRepo workflowStageRepo;
+    private final workflowStatusRepo workflowStatusRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -90,5 +93,24 @@ public class DataService {
 
     public List<Payments> fetchPayments() {
         return paymentsRepo.findAll();
+    }
+
+    public WorkflowStage findByStageName(String investigation) {
+        return workflowStageRepo.findByStageName(investigation);
+
+    }
+
+
+    public WorkflowStatus findByWorkStatus(String in_progress) {
+        return workflowStatusRepo.findByStatusName(in_progress);
+    }
+
+    public Workflow saveWorkflow(Workflow workflow) {
+       return workflowRepo.save(workflow);
+
+    }
+
+    public List<Workflow> fetchWorkflow() {
+        return workflowRepo.findAll();
     }
 }

@@ -64,3 +64,11 @@ INSERT INTO paymentStatus (statusName) VALUES
                                            ('disbursed'),
                                            ('pending'),
                                            ('declined');
+
+INSERT INTO workflowStatus (statusName) VALUES ('in-progress');
+INSERT INTO workflowStatus (statusName) VALUES ('completed');
+
+INSERT INTO workflowStage (stageName) VALUES ('investigation');
+INSERT INTO workflowStage (stageName) VALUES ('approval');
+INSERT INTO workflowStage (stageName) VALUES ('settlement');
+
