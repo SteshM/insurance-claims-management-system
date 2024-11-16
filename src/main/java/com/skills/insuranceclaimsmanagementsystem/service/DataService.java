@@ -17,6 +17,8 @@ public class DataService {
     private final RolesRepo rolesRepo;
     private final UserRepo userRepo;
     private final AttachmentRepo attachmentRepo;
+    private final PaymentStatusRepo paymentStatusRepo;
+    private final PaymentsRepo paymentsRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -54,6 +56,9 @@ public class DataService {
     public Optional<Claims> findByClaimId(int claimId) {
         return claimsRepo.findById(claimId);
     }
+    public Claims findByClaimId2(int claimId) {
+        return claimsRepo.findById(claimId).orElseThrow();
+    }
 
     public Attachments saveAttachment(Attachments attachment) {
         return attachmentRepo.save(attachment);
@@ -65,5 +70,17 @@ public class DataService {
 
     public Optional<Users> findByUserId(int userId) {
         return userRepo.findById(userId);
+    }
+
+    public List<PaymentStatus> fetchStatuses() {
+        return paymentStatusRepo.findAll();
+    }
+
+    public PaymentStatus findByStatusName(String pending) {
+        return paymentStatusRepo.findByStatusName(pending);
+    }
+
+    public Payments savePayment(Payments payments) {
+        return paymentsRepo.save(payments);
     }
 }

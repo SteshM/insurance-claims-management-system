@@ -75,9 +75,9 @@ public class ClaimsService {
         log.info("Retrieving claim with ID: {}", id);
         Optional<Claims> claims = dataService.findByClaimId(id);
         if (claims.isEmpty()) {
-            log.warn("Claim with ID {} not found", id);
             return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
         }
+
         var claimResDTO = modelMapper.map(claims.get(),ClaimResDTO.class);
         return utilities.successResponse("Successfully retrieved claim", claimResDTO);
     }
