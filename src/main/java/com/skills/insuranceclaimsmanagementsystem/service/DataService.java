@@ -87,4 +87,8 @@ public class DataService {
     public Optional<Payments> findByPaymentId(int id) {
         return paymentsRepo.findById(id);
     }
+
+    public List<Payments> fetchPayments() {
+        return paymentsRepo.findAll();
+    }
 }

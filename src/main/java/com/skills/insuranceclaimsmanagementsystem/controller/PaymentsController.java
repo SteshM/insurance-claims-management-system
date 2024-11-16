@@ -29,6 +29,11 @@ public class PaymentsController {
 
     }
 
+    @GetMapping("/payments")
+    public ResponseDTO getPayments() {
+        return paymentService.getPayments();
+    }
+
 
 
 }

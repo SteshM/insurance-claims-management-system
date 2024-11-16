@@ -68,4 +68,12 @@ public class PaymentService {
 
 
     }
+
+    public ResponseDTO getPayments() {
+        List<Payments>payments = dataService.fetchPayments();
+        List<PaymentResDTO>paymentResDTOS = payments.stream().map(
+                payments1 -> modelMapper.map(payments1, PaymentResDTO.class)
+        ).toList();
+    return utilities.successResponse("Success", paymentResDTOS);
+}
 }
