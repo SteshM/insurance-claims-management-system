@@ -21,7 +21,7 @@ public class DataService {
     private final PaymentsRepo paymentsRepo;
     private final WorkflowRepo workflowRepo;
     private final WorkflowStageRepo workflowStageRepo;
-    private final workflowStatusRepo workflowStatusRepo;
+    private final WorkflowStatusRepo workflowStatusRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -35,8 +35,8 @@ public class DataService {
        return claimsRepo.save(claim);
     }
 
-    public ClaimStatus findClaimStatusByName(String pending) {
-       return claimStatusRepo.findByName(pending);
+    public ClaimStatus findClaimStatusByName(String name) {
+       return claimStatusRepo.findByName(name);
     }
 
     public List<ClaimType> findAll() {

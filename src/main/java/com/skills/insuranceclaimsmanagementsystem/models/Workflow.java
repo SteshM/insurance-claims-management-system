@@ -13,6 +13,9 @@ public class Workflow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private Date dateApproved;
+    private Date dateInvestigationCompleted;
+    private Date dateSettled;
     private Date dateCreated;
     private String createdBy;
     private Date dateModified ;

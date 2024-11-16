@@ -1,6 +1,6 @@
 INSERT INTO roles (name) VALUES ('insurer'), ('customer');
 INSERT INTO claimTypes (name) VALUES ('medical'), ('vehicle'), ('property');
-INSERT INTO claimStatus (name) VALUES ('pending'), ('approved'), ('rejected');
+INSERT INTO claimStatus (name) VALUES ('submitted'), ('pending'), ('approved'), ('rejected');
 INSERT INTO users (
     username,
     password,
@@ -62,8 +62,8 @@ INSERT INTO users (
 
 INSERT INTO paymentStatus (statusName) VALUES
                                            ('disbursed'),
-                                           ('pending'),
-                                           ('declined');
+                                           ('pending');
+
 
 INSERT INTO workflowStatus (statusName) VALUES ('in-progress');
 INSERT INTO workflowStatus (statusName) VALUES ('completed');

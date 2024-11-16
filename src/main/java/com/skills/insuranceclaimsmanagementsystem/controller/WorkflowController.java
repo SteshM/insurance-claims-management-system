@@ -21,12 +21,12 @@ public class WorkflowController {
     public ResponseDTO getWorkflowStages() {
         return workflowService.getWorkflowStages();
     }
-    @PostMapping("/workflow/claim/{id}")
+    @PostMapping("/claim/{id}/workflow")
     public ResponseDTO initiateWorkflow(@PathVariable int id, @RequestBody WorkflowRequestDTO workflowRequestDTO) {
         return workflowService.initiateWorkflow(id,workflowRequestDTO);
     }
 
-    @GetMapping("/claims/{id}/workflow")
+    @GetMapping("/claim/{id}/workflow")
     public ResponseDTO getWorkflow(@PathVariable int id) {
         return workflowService.retrieveClaimHistory(id);
     }

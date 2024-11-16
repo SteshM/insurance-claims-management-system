@@ -28,10 +28,6 @@ public class ClaimsController {
     public ResponseDTO getClaims(){
         return claimsService.getClaims();
     }
-    @PutMapping("/claim/{id}/status")
-    public ResponseDTO updateClaimStatus(@PathVariable int id, @RequestBody UpdateClaimDTO updateClaimDTO){
-        return claimsService.updateClaimStatus(id,updateClaimDTO);
-    }
 
     @GetMapping("/claim-types")
     public ResponseDTO getClaimTypes() throws JsonProcessingException {

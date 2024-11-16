@@ -45,9 +45,9 @@ public class ClaimsService {
             attachment.setDescription(attachmentRequest.getDescription());
             attachment.setClaim(claim);
             return attachment;
-        }).collect(Collectors.toList());
+        }).toList();
         claim.setAttachments(attachments);
-        ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
+        ClaimStatus claimStatus = dataService.findClaimStatusByName("submitted");
         claim.setClaimStatus(claimStatus);
         var savedClaim = dataService.saveClaim(claim);
         var claimResDTO = modelMapper.map(savedClaim,ClaimResDTO.class);
@@ -90,23 +90,6 @@ public class ClaimsService {
         return utilities.successResponse("Successfully retrieved claims", claimResDTOS);
     }
 
-    public ResponseDTO updateClaimStatus(int id, UpdateClaimDTO updateClaimDTO) {
-        Optional<Claims> claim = dataService.findByClaimId(id);
-        if (claim.isEmpty()) {
-            log.warn("Claim with ID {} not found", id);
-            return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
-        }
-        ClaimStatus claimStatus = dataService.findClaimStatusByName(updateClaimDTO.getName());
-        if (claimStatus == null){
-            return utilities.failedResponse(1,"ClaimStatus not found with name: " + updateClaimDTO.getName(),null);
-        }
-        var savedClaim = claim.get();
-        savedClaim.setClaimStatus(claimStatus);
-        var updatedClaim =dataService.saveClaim(savedClaim);
-        var updateClaimResDTO = modelMapper.map(updatedClaim,ClaimResDTO.class);
-        return utilities.successResponse("Successfully updated claim status", updateClaimResDTO);
-
-    }
 }
 
 
