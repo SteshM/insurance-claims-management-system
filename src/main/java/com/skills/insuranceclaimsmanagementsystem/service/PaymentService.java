@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.PaymentRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdatePaymentStatusDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentTypeResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
@@ -32,7 +33,6 @@ public class PaymentService {
     }
 
     public ResponseDTO recordPayment(int id, PaymentRequestDTO paymentRequestDTO) {
-        // Create a new Payments entity and set properties from the request DTO
         Payments payments = new Payments();
         payments.setPaymentDate(paymentRequestDTO.getPaymentDate());
         payments.setTransactionReference(paymentRequestDTO.getTransactionReference());
@@ -42,25 +42,30 @@ public class PaymentService {
             return utilities.failedResponse(1,"Claim not found for the provided ID", null);
         }
 
-        // Get the claim from Optional
         Claims claim = claimOptional.get();
-
-        // Set the amount of the payment to the claimed amount
         payments.setAmount(claim.getAmountClaimed());
-
-        // Set the claim associated with this payment
-        payments.setClaim(claim); // Associate the payment with the claim
-
-        // Retrieve the payment status by name and set it to "pending"
+        payments.setClaim(claim);
         PaymentStatus paymentStatus = dataService.findByStatusName("pending");
         payments.setStatus(paymentStatus);
-
-        // Save the payment and map it to the response DTO
         Payments savedPayment = dataService.savePayment(payments);
         var paymentResDTO = modelMapper.map(savedPayment, PaymentResDTO.class);
-
-        // Return success response
         return utilities.successResponse("Payment recorded successfully", paymentResDTO);
     }
 
+    public ResponseDTO updatePaymentStatus(int id, UpdatePaymentStatusDTO updatePaymentStatusDTO) {
+        Optional<Payments> payments = dataService.findByPaymentId(id);
+        if (payments.isEmpty()) {
+            return utilities.failedResponse(1,"Payment not found for the provided ID", null);
+        }
+        PaymentStatus paymentStatus = dataService.findByStatusName(updatePaymentStatusDTO.getStatusName());
+        if (paymentStatus.equals(payments.get().getStatus())) {
+            return utilities.failedResponse(1,"Payment already recorded for the provided ID", null);
+        }
+        payments.get().setStatus(paymentStatus);
+         var updatedPayment = dataService.savePayment(payments.get());
+         var paymentResDTO = modelMapper.map(updatedPayment, PaymentResDTO.class);
+         return utilities.successResponse("Payment recorded successfully", paymentResDTO);
+
+
+    }
 }

@@ -83,4 +83,8 @@ public class DataService {
     public Payments savePayment(Payments payments) {
         return paymentsRepo.save(payments);
     }
+
+    public Optional<Payments> findByPaymentId(int id) {
+        return paymentsRepo.findById(id);
+    }
 }
