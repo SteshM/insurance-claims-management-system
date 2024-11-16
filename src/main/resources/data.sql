@@ -59,3 +59,8 @@ INSERT INTO users (
              'customer',
              2
          );
+
+INSERT INTO paymentStatus (statusName) VALUES
+                                           ('disbursed'),
+                                           ('pending'),
+                                           ('declined');

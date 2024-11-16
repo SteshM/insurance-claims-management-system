@@ -69,5 +69,28 @@ CREATE TABLE attachments (
                              url VARCHAR(255) NOT NULL,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE paymentStatus (
+                               id SERIAL PRIMARY KEY,
+                               statusName VARCHAR(50) NOT NULL,
+                               dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               createdBy VARCHAR(50),
+                               dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               modifiedBy VARCHAR(50)
+);
+
+
+CREATE TABLE payments (
+                          id SERIAL PRIMARY KEY,
+                          claimId INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,  -- Assuming payments are associated with claims
+                          amount DECIMAL(12, 2) NOT NULL,
+                          paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          statusId INT NOT NULL REFERENCES paymentStatus(id) ON DELETE RESTRICT,
+                          transactionReference VARCHAR(100) UNIQUE,
+                          createdBy VARCHAR(50),
+                          modifiedBy VARCHAR(50),
+                          dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
