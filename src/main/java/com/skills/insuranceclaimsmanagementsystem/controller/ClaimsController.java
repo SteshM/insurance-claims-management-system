@@ -1,7 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdateClaimDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,17 @@ public class ClaimsController {
        return claimsService.submitClaim(claimRequestDTO);
 
     }
-    @GetMapping("/claim/{claimId}")
-    public ResponseDTO getClaim(@PathVariable int claimId){
-        return claimsService.getClaim(claimId);
+    @GetMapping("/claim/{id}")
+    public ResponseDTO getClaim(@PathVariable int id){
+        return claimsService.getClaim(id);
     }
     @GetMapping("/claims")
     public ResponseDTO getClaims(){
         return claimsService.getClaims();
+    }
+    @PutMapping("/claim/{id}/status")
+    public ResponseDTO updateClaimStatus(@PathVariable int id, @RequestBody UpdateClaimDTO updateClaimDTO){
+        return claimsService.updateClaimStatus(id,updateClaimDTO);
     }
 
     @GetMapping("/claim-types")
@@ -42,7 +46,7 @@ public class ClaimsController {
         return claimsService.getClaimStatus();
     }
     @GetMapping("/users")
-    public ResponseDTO getUsers() throws JsonProcessingException {
+    public ResponseDTO getUsers() {
         return claimsService.getUsers();
     }
 

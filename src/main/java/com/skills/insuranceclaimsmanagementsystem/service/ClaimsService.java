@@ -2,6 +2,7 @@ package com.skills.insuranceclaimsmanagementsystem.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdateClaimDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
@@ -83,12 +84,12 @@ public class ClaimsService {
 
     }
 
-    public ResponseDTO getClaim(int claimId) {
-        Claims claims = dataService.findByClaimId(claimId);
-        log.info("Retrieving claim with ID: {}", claimId);
+    public ResponseDTO getClaim(int id) {
+        Claims claims = dataService.findByClaimId(id);
+        log.info("Retrieving claim with ID: {}", id);
         if (claims == null) {
-            log.warn("Claim with ID {} not found", claimId);
-            return utilities.failedResponse(01,"Claim not found with ID: " + claimId,null);
+            log.warn("Claim with ID {} not found", id);
+            return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
         }
         var claimResDTO = ClaimResDTO.builder()
                 .id(claims.getId())
@@ -96,8 +97,8 @@ public class ClaimsService {
                 .name(claims.getClaimType().getName())
                 .incidentDate(claims.getIncidentDate())
                 .policyNumber(String.valueOf(claims.getPolicyNumber()))
-                .url(claims.getAttachments().get(0).getUrl())
-                .type(claims.getAttachments().get(0).getType())
+                .url(claims.getAttachments().getFirst().getUrl())
+                .type(claims.getAttachments().getFirst().getType())
                 .name(claims.getClaimStatus().getName())
                 .build();
         return utilities.successResponse("Successfully retrieved claim", claimResDTO);
@@ -109,6 +110,14 @@ public class ClaimsService {
                 .map(claim -> modelMapper.map(claim, ClaimResDTO.class))
                 .toList();
         return utilities.successResponse("Successfully retrieved claims", claimResDTOS);
+    }
+
+    public ResponseDTO updateClaimStatus(int id, UpdateClaimDTO updateClaimDTO) {
+        Claims claim = dataService.findByClaimId(id);
+        claim.getClaimStatus().setName(updateClaimDTO.getName());
+        var updateClaimResDTO =dataService.saveClaim(claim);
+        return utilities.successResponse("Successfully updated claim status", updateClaimResDTO);
+
     }
 }
 

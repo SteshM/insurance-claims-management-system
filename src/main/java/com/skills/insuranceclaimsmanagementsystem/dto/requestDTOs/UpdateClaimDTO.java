@@ -7,5 +7,4 @@ import lombok.Setter;
 @Getter
 public class UpdateClaimDTO {
     private String name;
-    private String comment;
 }
