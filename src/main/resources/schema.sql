@@ -22,11 +22,11 @@ CREATE TABLE users (
                        createdBy VARCHAR(50),
                        dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        modifiedBy VARCHAR(50),
-                       role_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT
+                       roleId INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT
 
 );
 
-CREATE TABLE claim_types(
+CREATE TABLE claimTypes(
                              id SERIAL PRIMARY KEY,
                              name VARCHAR(50) UNIQUE NOT NULL,
                              active BOOLEAN DEFAULT TRUE,
@@ -35,7 +35,7 @@ CREATE TABLE claim_types(
                              dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                              modifiedBy VARCHAR(50)
 );
-CREATE TABLE claim_status (
+CREATE TABLE claimStatus (
                               id SERIAL PRIMARY KEY,
                               name VARCHAR(50) UNIQUE NOT NULL,
                               active BOOLEAN DEFAULT TRUE,
@@ -48,11 +48,11 @@ CREATE TABLE claim_status (
 
 CREATE TABLE claims (
                         id SERIAL PRIMARY KEY,
-                        policy_number VARCHAR(50) NOT NULL,
-                        claim_type_id INT NOT NULL REFERENCES claim_types(id) ON DELETE RESTRICT,
-                        incident_date DATE NOT NULL,
-                        amount_claimed NUMERIC(12, 2) NOT NULL,
-                        claim_status_id INT NOT NULL REFERENCES claim_status(id) ON DELETE RESTRICT,
+                        policyNumber VARCHAR(50) NOT NULL,
+                        claimTypeId INT NOT NULL REFERENCES claimTypes(id) ON DELETE RESTRICT,
+                        incidentDate DATE NOT NULL,
+                        amountClaimed NUMERIC(12, 2) NOT NULL,
+                        claimStatusId INT NOT NULL REFERENCES claimStatus(id) ON DELETE RESTRICT,
                         active BOOLEAN DEFAULT TRUE,
                         dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         createdBy VARCHAR(50),
@@ -61,9 +61,10 @@ CREATE TABLE claims (
 );
 
 
+
 CREATE TABLE attachments (
                              id SERIAL PRIMARY KEY,
-                             claim_id INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,
+                             claimId INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,
                              type VARCHAR(50),
                              url VARCHAR(255) NOT NULL,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

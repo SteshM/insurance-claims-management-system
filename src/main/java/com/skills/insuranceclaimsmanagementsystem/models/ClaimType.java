@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-@Table(name = "claim_types")
+@Table(name = "claimTypes")
 public class ClaimType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

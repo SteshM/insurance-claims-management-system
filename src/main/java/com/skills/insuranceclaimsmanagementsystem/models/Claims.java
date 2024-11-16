@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,19 +18,19 @@ public class Claims {
     private int id;
     private String policyNumber;
     private Date incidentDate;
-    private Double amountClaimed;
+    private BigDecimal amountClaimed;
     private boolean active;
     private Date dateCreated;
-    private Date dateUpdated;
+    private Date dateModified;
     private String createdBy;
-    private String updatedBy;
+    private String modifiedBy;
 
     @ManyToOne
-    @JoinColumn(name = "claim_status_id")
+    @JoinColumn(name = "claimStatusId")
     private ClaimStatus claimStatus;
 
     @ManyToOne
-    @JoinColumn(name = "claim_type_id")
+    @JoinColumn(name = "claimTypeId")
     private ClaimType claimType;
 
     @OneToMany

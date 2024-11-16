@@ -18,7 +18,4 @@ public class Attachments {
     private String description;
     private Timestamp createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "claim_id", nullable = false)
-    private Claims claim;
 }

@@ -40,13 +40,13 @@ public class ClaimsService {
             Attachments attachment = new Attachments();
             attachment.setType(attachmentRequest.getType());
             attachment.setUrl(attachmentRequest.getUrl());
-            attachment.setClaim(claim);
+            dataService.saveAttachment(attachment);
             return attachment;
         }).collect(Collectors.toList());
 
         claim.setAttachments(attachments);
 
-        ClaimStatus claimStatus = dataService.findClaimStatusByName("Pending");
+        ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
         claim.setClaimStatus(claimStatus);
         var claimResDto = dataService.saveClaim(claim);
         return utilities.successResponse("Successfully submitted a claim", claimResDto);
@@ -82,6 +82,27 @@ public class ClaimsService {
         return utilities.successResponse("Successfully retrieved users", userResDTO);
 
     }
+
+    public ResponseDTO getClaim(int claimId) {
+        Claims claims = dataService.findByClaimId(claimId);
+        log.info("Retrieving claim with ID: {}", claimId);
+        if (claims == null) {
+            log.warn("Claim with ID {} not found", claimId);
+            return utilities.failedResponse(01,"Claim not found with ID: " + claimId,null);
+        }
+        var claimResDTO = ClaimResDTO.builder()
+                .id(claims.getId())
+                .amountClaimed(claims.getAmountClaimed())
+                .name(claims.getClaimType().getName())
+                .incidentDate(claims.getIncidentDate())
+                .policyNumber(String.valueOf(claims.getPolicyNumber()))
+                .url(claims.getAttachments().get(0).getUrl())
+                .type(claims.getAttachments().get(0).getType())
+                .name(claims.getClaimStatus().getName())
+                .build();
+        return utilities.successResponse("Successfully retrieved claim", claimResDTO);
+    }
+
 }
 
 

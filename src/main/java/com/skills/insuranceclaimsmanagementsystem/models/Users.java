@@ -29,7 +29,7 @@ public class Users {
         private Date dateModified ;
         private String modifiedBy;
         @ManyToOne
-        @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "roleId", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
         private Roles role;
 
 

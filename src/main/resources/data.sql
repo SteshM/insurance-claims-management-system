@@ -1,6 +1,6 @@
 INSERT INTO roles (name) VALUES ('insurer'), ('customer');
-INSERT INTO claim_types(name) VALUES ('medical'), ('vehicle'), ('property');
-INSERT INTO claim_status (name) VALUES ('pending'), ('approved'), ('rejected');
+INSERT INTO claimTypes (name) VALUES ('medical'), ('vehicle'), ('property');
+INSERT INTO claimStatus (name) VALUES ('pending'), ('approved'), ('rejected');
 INSERT INTO users (
     username,
     password,
@@ -14,7 +14,7 @@ INSERT INTO users (
     createdBy,
     dateModified,
     modifiedBy,
-    role_id
+    roleId
 ) VALUES (
              'janedoe',
              'hashedpassword123',
@@ -43,7 +43,7 @@ INSERT INTO users (
     createdBy,
     dateModified,
     modifiedBy,
-    role_id
+    roleId
 ) VALUES (
              'john',
              'password123',

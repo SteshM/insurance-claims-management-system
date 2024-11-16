@@ -8,6 +8,7 @@ import lombok.Setter;
 public class AttachmentDTO {
         private String type;
         private String url;
+        private String description;
 
 
 }

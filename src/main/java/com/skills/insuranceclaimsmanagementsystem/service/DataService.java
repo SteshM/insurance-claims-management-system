@@ -15,6 +15,7 @@ public class DataService {
     private final ClaimStatusRepo claimStatusRepo;
     private final RolesRepo rolesRepo;
     private final UserRepo userRepo;
+    private final AttachmentRepo attachmentRepo;
 
     public ClaimType findByName(String name) {
         return claimTypeRepo.findByName(name);
@@ -47,5 +48,13 @@ public class DataService {
 
     public List<Users> fetchUsers() {
         return userRepo.findAll();
+    }
+
+    public Claims findByClaimId(int claimId) {
+        return claimsRepo.findById(claimId);
+    }
+
+    public Attachments saveAttachment(Attachments attachment) {
+        return attachmentRepo.save(attachment);
     }
 }
