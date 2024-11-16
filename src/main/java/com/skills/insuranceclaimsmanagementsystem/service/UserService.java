@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UserDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.RolesResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.UserResDTO;
@@ -42,5 +43,20 @@ public class UserService {
         Optional<Users> user = dataService.findByUserId(id);
         UserResDTO userResDTO = modelMapper.map(user.get(), UserResDTO.class);
         return utilities.successResponse("Successfully retrieved user", userResDTO);
+    }
+
+    public ResponseDTO updateUser(int id, UserDTO userDTO) {
+        Optional<Users> user = dataService.findByUserId(id);
+        user.get().setEmail(userDTO.getEmail());
+        user.get().setGender(userDTO.getGender());
+        user.get().setFullName(userDTO.getFullName());
+        user.get().setPassword(userDTO.getPassword());
+        user.get().setPhoneNumber(userDTO.getPhoneNumber());
+        user.get().setDateOfBirth(userDTO.getDateOfBirth());
+        user.get().setUsername(userDTO.getUsername());
+        var userResDTO = modelMapper.map(user.get(), UserResDTO.class);
+        return utilities.successResponse("Successfully updated user", userResDTO);
+
+
     }
 }
