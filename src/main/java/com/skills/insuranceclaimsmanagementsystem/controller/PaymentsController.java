@@ -34,7 +34,7 @@ public class PaymentsController {
         return paymentService.getPayments();
     }
 
-    @PostMapping("/payments/claim/{id}")
+    @GetMapping("/payments/claim/{id}")
     public ResponseDTO claimPayments(@PathVariable int id) {
         return paymentService.getClaimPayments(id);
     }
