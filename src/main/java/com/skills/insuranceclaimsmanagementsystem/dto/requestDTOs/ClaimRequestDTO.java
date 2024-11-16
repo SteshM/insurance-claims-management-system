@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs;
 
+import com.skills.insuranceclaimsmanagementsystem.models.Attachments;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +17,5 @@ public class ClaimRequestDTO {
     private BigDecimal amountClaimed;
     private String description;
     private String name;
-    private List<AttachmentDTO> attachmentDTOs = new ArrayList<>();
+    private List<Attachments> attachments = new ArrayList<>();
 }

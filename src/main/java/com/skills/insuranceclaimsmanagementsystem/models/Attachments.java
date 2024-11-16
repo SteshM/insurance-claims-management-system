@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,10 @@ public class Attachments {
     private String url;
     private String description;
     private Timestamp createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "claimId", nullable = false)
+    @JsonIgnore
+    private Claims claim;
 
 }

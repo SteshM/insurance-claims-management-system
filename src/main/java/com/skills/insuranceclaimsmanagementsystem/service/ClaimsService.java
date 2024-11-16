@@ -38,20 +38,20 @@ public class ClaimsService {
         claim.setClaimType(claimType);
         claim.setIncidentDate(claimRequestDTO.getIncidentDate());
         claim.setAmountClaimed(claimRequestDTO.getAmountClaimed());
-        List<Attachments> attachments = claimRequestDTO.getAttachmentDTOs().stream().map(attachmentRequest -> {
+        List<Attachments> attachments = claimRequestDTO.getAttachments().stream().map(attachmentRequest -> {
             Attachments attachment = new Attachments();
             attachment.setType(attachmentRequest.getType());
             attachment.setUrl(attachmentRequest.getUrl());
-            dataService.saveAttachment(attachment);
+            attachment.setDescription(attachmentRequest.getDescription());
+            attachment.setClaim(claim);
             return attachment;
         }).collect(Collectors.toList());
-
         claim.setAttachments(attachments);
-
         ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
         claim.setClaimStatus(claimStatus);
-        var claimResDto = dataService.saveClaim(claim);
-        return utilities.successResponse("Successfully submitted a claim", claimResDto);
+        var savedClaim = dataService.saveClaim(claim);
+        var claimResDTO = modelMapper.map(savedClaim,ClaimResDTO.class);
+        return utilities.successResponse("Successfully submitted a claim", claimResDTO);
     }
 
     public ResponseDTO getClaimTypes() throws JsonProcessingException {
@@ -72,22 +72,13 @@ public class ClaimsService {
     }
 
     public ResponseDTO getClaim(int id) {
-        Optional<Claims> claims = dataService.findByClaimId(id);
         log.info("Retrieving claim with ID: {}", id);
+        Optional<Claims> claims = dataService.findByClaimId(id);
         if (claims.isEmpty()) {
             log.warn("Claim with ID {} not found", id);
             return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
         }
-        var claimResDTO = ClaimResDTO.builder()
-                .id(claims.get().getId())
-                .amountClaimed(claims.get().getAmountClaimed())
-                .name(claims.get().getClaimType().getName())
-                .incidentDate(claims.get().getIncidentDate())
-                .policyNumber(String.valueOf(claims.get().getPolicyNumber()))
-                .url(claims.get().getAttachments().getFirst().getUrl())
-                .type(claims.get().getAttachments().getFirst().getType())
-                .name(claims.get().getClaimStatus().getName())
-                .build();
+        var claimResDTO = modelMapper.map(claims.get(),ClaimResDTO.class);
         return utilities.successResponse("Successfully retrieved claim", claimResDTO);
     }
 
@@ -101,8 +92,18 @@ public class ClaimsService {
 
     public ResponseDTO updateClaimStatus(int id, UpdateClaimDTO updateClaimDTO) {
         Optional<Claims> claim = dataService.findByClaimId(id);
-        claim.get().getClaimStatus().setName(updateClaimDTO.getName());
-        var updateClaimResDTO =dataService.saveClaim(claim.get());
+        if (claim.isEmpty()) {
+            log.warn("Claim with ID {} not found", id);
+            return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
+        }
+        ClaimStatus claimStatus = dataService.findClaimStatusByName(updateClaimDTO.getName());
+        if (claimStatus == null){
+            return utilities.failedResponse(1,"ClaimStatus not found with name: " + updateClaimDTO.getName(),null);
+        }
+        var savedClaim = claim.get();
+        savedClaim.setClaimStatus(claimStatus);
+        var updatedClaim =dataService.saveClaim(savedClaim);
+        var updateClaimResDTO = modelMapper.map(updatedClaim,ClaimResDTO.class);
         return utilities.successResponse("Successfully updated claim status", updateClaimResDTO);
 
     }

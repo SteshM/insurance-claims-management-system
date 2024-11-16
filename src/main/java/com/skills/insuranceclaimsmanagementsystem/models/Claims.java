@@ -33,6 +33,6 @@ public class Claims {
     @JoinColumn(name = "claimTypeId")
     private ClaimType claimType;
 
-    @OneToMany
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
     private List<Attachments> attachments;
 }

@@ -82,7 +82,7 @@ CREATE TABLE paymentStatus (
 CREATE TABLE payments (
                           id SERIAL PRIMARY KEY,
                           claimId INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,  -- Assuming payments are associated with claims
-                          amount DECIMAL(12, 2) NOT NULL,
+                          amount NUMERIC(12, 2)  NOT NULL,
                           paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           statusId INT NOT NULL REFERENCES paymentStatus(id) ON DELETE RESTRICT,
                           transactionReference VARCHAR(100) UNIQUE,

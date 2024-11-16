@@ -3,6 +3,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -14,9 +15,9 @@ public class ClaimResDTO {
     private String policyNumber;
     private Date incidentDate;
     private BigDecimal amountClaimed;
-    private String description;
-    private String name;
-    private String url;
-    private String type;
+    private ClaimStatusResDTO claimStatus;
+    private ClaimTypeResDTO claimType;
+    private List<AttachmentResDTO> attachments;
+
 
 }
