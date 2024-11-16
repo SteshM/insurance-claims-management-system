@@ -24,6 +24,10 @@ public class ClaimsController {
     public ResponseDTO getClaim(@PathVariable int claimId){
         return claimsService.getClaim(claimId);
     }
+    @GetMapping("/claims")
+    public ResponseDTO getClaims(){
+        return claimsService.getClaims();
+    }
 
     @GetMapping("/claim-types")
     public ResponseDTO getClaimTypes() throws JsonProcessingException {

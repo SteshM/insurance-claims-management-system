@@ -103,6 +103,13 @@ public class ClaimsService {
         return utilities.successResponse("Successfully retrieved claim", claimResDTO);
     }
 
+    public ResponseDTO getClaims() {
+        List<Claims>claims = dataService.fetchClaims();
+        List<ClaimResDTO>claimResDTOS = claims.stream()
+                .map(claim -> modelMapper.map(claim, ClaimResDTO.class))
+                .toList();
+        return utilities.successResponse("Successfully retrieved claims", claimResDTOS);
+    }
 }
 
 

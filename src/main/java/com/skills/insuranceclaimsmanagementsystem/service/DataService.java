@@ -57,4 +57,8 @@ public class DataService {
     public Attachments saveAttachment(Attachments attachment) {
         return attachmentRepo.save(attachment);
     }
+
+    public List<Claims> fetchClaims() {
+        return claimsRepo.findAll();
+    }
 }
