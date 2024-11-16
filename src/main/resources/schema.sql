@@ -81,7 +81,7 @@ CREATE TABLE paymentStatus (
 
 CREATE TABLE payments (
                           id SERIAL PRIMARY KEY,
-                          claimId INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,  -- Assuming payments are associated with claims
+                          claimId INT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,
                           amount NUMERIC(12, 2)  NOT NULL,
                           paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           statusId INT NOT NULL REFERENCES paymentStatus(id) ON DELETE RESTRICT,
@@ -91,6 +91,37 @@ CREATE TABLE payments (
                           dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE workflowStage (
+                               id SERIAL PRIMARY KEY,
+                               stageName VARCHAR(50) UNIQUE NOT NULL,
+                               dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               createdBy VARCHAR(50),
+                               dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               modifiedBy VARCHAR(50)
+);
+
+CREATE TABLE workflowStatus (
+                                id SERIAL PRIMARY KEY,
+                                statusName VARCHAR(50)  NOT NULL ,
+                                dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                createdBy VARCHAR(50),
+                                dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                modifiedBy VARCHAR(50)
+);
+
+CREATE TABLE workflow (
+                          id SERIAL PRIMARY KEY,
+                          claimId INT REFERENCES claims(id) ON DELETE CASCADE,
+                          assignedUserId INT REFERENCES users(id),
+                          stageId INT REFERENCES workflowStage(id) ON DELETE RESTRICT,
+                          statusId INT REFERENCES workflowStatus(id) ON DELETE RESTRICT,
+                          dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          createdBy VARCHAR(50),
+                          dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          modifiedBy VARCHAR(50)
+);
+
 
 
 
