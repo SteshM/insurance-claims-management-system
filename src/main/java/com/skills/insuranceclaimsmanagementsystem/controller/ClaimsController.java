@@ -37,17 +37,10 @@ public class ClaimsController {
     public ResponseDTO getClaimTypes() throws JsonProcessingException {
         return claimsService.getClaimTypes();
     }
-    @GetMapping("/roles")
-    public ResponseDTO getRoles() {
-        return claimsService.getRoles();
-    }
+
     @GetMapping("/claim-status")
     public ResponseDTO getClaimStatus() throws JsonProcessingException {
         return claimsService.getClaimStatus();
-    }
-    @GetMapping("/users")
-    public ResponseDTO getUsers() {
-        return claimsService.getUsers();
     }
 
 

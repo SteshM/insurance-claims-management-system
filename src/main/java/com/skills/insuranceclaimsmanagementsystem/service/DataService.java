@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,7 @@ public class DataService {
         return userRepo.findAll();
     }
 
-    public Claims findByClaimId(int claimId) {
+    public Optional<Claims> findByClaimId(int claimId) {
         return claimsRepo.findById(claimId);
     }
 
@@ -60,5 +61,9 @@ public class DataService {
 
     public List<Claims> fetchClaims() {
         return claimsRepo.findAll();
+    }
+
+    public Optional<Users> findByUserId(int userId) {
+        return userRepo.findById(userId);
     }
 }
