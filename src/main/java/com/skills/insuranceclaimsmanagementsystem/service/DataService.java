@@ -113,4 +113,12 @@ public class DataService {
     public List<Workflow> fetchWorkflow() {
         return workflowRepo.findAll();
     }
+
+    public List<WorkflowStatus> fetchWorkflowStatus() {
+        return workflowStatusRepo.findAll();
+    }
+
+    public List<WorkflowStage> fetchWorkflowStages() {
+        return workflowStageRepo.findAll();
+    }
 }

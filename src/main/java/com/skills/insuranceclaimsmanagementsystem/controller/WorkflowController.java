@@ -12,6 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class WorkflowController {
     private final WorkflowService workflowService;
 
+    @GetMapping("/workflow-status")
+    public ResponseDTO getWorkflowStatus() {
+        return workflowService.getWorkflowStatus();
+    }
+
+    @GetMapping("/workflow-stages")
+    public ResponseDTO getWorkflowStages() {
+        return workflowService.getWorkflowStages();
+    }
     @PostMapping("/workflow/claim/{id}")
     public ResponseDTO initiateWorkflow(@PathVariable int id, @RequestBody WorkflowRequestDTO workflowRequestDTO) {
         return workflowService.initiateWorkflow(id,workflowRequestDTO);
@@ -19,6 +28,7 @@ public class WorkflowController {
 
     @GetMapping("/claims/{id}/workflow")
     public ResponseDTO getWorkflow(@PathVariable int id) {
-        return workflowService.RetrieveClaimHistory(id);
+        return workflowService.retrieveClaimHistory(id);
     }
+
 }

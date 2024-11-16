@@ -2,14 +2,15 @@ package com.skills.insuranceclaimsmanagementsystem.service;
 
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.WorkflowRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkStatusResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkflowResDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkflowStageResDTO;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class WorkflowService {
 
     }
 
-    public ResponseDTO RetrieveClaimHistory(int id) {
+    public ResponseDTO retrieveClaimHistory(int id) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
 
         if (claimOptional.isEmpty()) {
@@ -55,5 +56,22 @@ public class WorkflowService {
                 ).toList();
         return utilities.successResponse("successfully retrieved workflow", workflowResDTOS);
 
+    }
+
+    public ResponseDTO getWorkflowStatus() {
+        List<WorkflowStatus>statuses = dataService.fetchWorkflowStatus();
+        List<WorkStatusResDTO>workStatusResDTOS =statuses.stream().map(
+                workflowStatus -> modelMapper.map(workflowStatus, WorkStatusResDTO.class)
+        ).toList();
+        return utilities.successResponse("successfully retrieved workflow status", workStatusResDTOS);
+    }
+
+
+    public ResponseDTO getWorkflowStages() {
+        List<WorkflowStage>stages = dataService.fetchWorkflowStages();
+        List<WorkflowStageResDTO>stageResDTOS = stages.stream().map(
+                workflowStage -> modelMapper.map(workflowStage, WorkflowStageResDTO.class)
+        ).toList();
+        return utilities.successResponse("successfully retrieved workflow stages", stageResDTOS);
     }
 }
