@@ -1,14 +1,13 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.WorkflowRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkStatusResDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkflowResDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.WorkflowStageResDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,11 +35,12 @@ public class WorkflowService {
         return utilities.successResponse("successfully retrieved workflow stages", stageResDTOS);
     }
 
+
     public ResponseDTO initiateWorkflow(int id, WorkflowRequestDTO workflowRequestDTO) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
 
         if (claimOptional.isEmpty()) {
-            return utilities.failedResponse(1,"Claim not found for the provided ID", null);
+            return utilities.failedResponse(1, "Claim not found for the provided ID", null);
         }
         var claim = claimOptional.get();
         Workflow workflow = new Workflow();
@@ -52,17 +52,17 @@ public class WorkflowService {
         workflow.setWorkflowStatus(workflowStatus);
         Optional<Users> users = dataService.findByUserId(workflowRequestDTO.getAssignedTo());
         workflow.setAssignedUser(users.get());
-        var initiatedWorkflow =  dataService.saveWorkflow(workflow);
+        var initiatedWorkflow = dataService.saveWorkflow(workflow);
         ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
-       claim.setClaimStatus(claimStatus);
+        claim.setClaimStatus(claimStatus);
         dataService.saveClaim(claim);
-      var workflowResDTO = modelMapper.map(initiatedWorkflow, WorkflowResDTO.class);
-      return utilities.successResponse("successfully initiated workflow", workflowResDTO);
-
+        var workflowResDTO = modelMapper.map(initiatedWorkflow, WorkflowResDTO.class);
+        return utilities.successResponse("successfully initiated workflow", workflowResDTO);
     }
 
 
-    public ResponseDTO retrieveClaimHistory(int id) {
+
+        public ResponseDTO retrieveClaimHistory(int id) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
         if (claimOptional.isEmpty()) {
             return utilities.failedResponse(1,"Claim not found for the provided ID", null);

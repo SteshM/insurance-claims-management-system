@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Workflow {
 
     @ManyToOne
     @JoinColumn(name = "claimId", nullable = false)
+    @JsonIgnore
     private Claims claim;
 
     @ManyToOne

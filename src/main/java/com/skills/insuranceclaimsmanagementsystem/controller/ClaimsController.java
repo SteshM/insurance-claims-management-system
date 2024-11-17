@@ -39,7 +39,7 @@ public class ClaimsController {
     }
 
     @PostMapping("/claim/{id}/investigation-report")
-    public ResponseDTO claimInvestigationReport(@PathVariable int id, @RequestBody InvestigationReportDTO investigationReportDTO){
+    public ResponseDTO claimInvestigationReport(@PathVariable int id, @RequestBody InvestigationReportDTO investigationReportDTO) throws JsonProcessingException {
         return claimsService.investigationReport(id,investigationReportDTO);
     }
 

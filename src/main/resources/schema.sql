@@ -121,6 +121,16 @@ CREATE TABLE workflow (
                           dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           modifiedBy VARCHAR(50)
 );
+CREATE TABLE reports (
+                         id SERIAL PRIMARY KEY,
+                         reportName VARCHAR(100) NOT NULL,
+                         reportData JSONB NOT NULL,
+                         dateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         dateModified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         createdBy VARCHAR(100),
+                         modifiedBy VARCHAR(100)
+);
+
 
 
 

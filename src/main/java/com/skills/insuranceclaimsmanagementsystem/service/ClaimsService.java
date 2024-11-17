@@ -88,7 +88,8 @@ public class ClaimsService {
                 .toList();
         return utilities.successResponse("Successfully retrieved claims", claimResDTOS);
     }
-    public ResponseDTO investigationReport(int id, InvestigationReportDTO investigationReportDTO) {
+
+    public ResponseDTO investigationReport(int id, InvestigationReportDTO investigationReportDTO) throws JsonProcessingException {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
 
         if (claimOptional.isEmpty()) {
@@ -96,6 +97,8 @@ public class ClaimsService {
         }
 
         Claims claim = claimOptional.get();
+        log.info("Claim retrieved : {}",new ObjectMapper().writeValueAsString(claim));
+
 
         // Map attachments to the claim
         List<Attachments> attachments = investigationReportDTO.getAttachments().stream().map(attachmentRequest -> {
@@ -110,27 +113,24 @@ public class ClaimsService {
         // Update claim's investigation completion date
         claim.setDateInvestigationCompleted(new Date());
         claim.setAttachments(attachments);
+        dataService.saveClaim(claim);
+        var workflowList = claim.getWorkflows();
+        log.info("Retrieved {}: {}",workflowList.size(),new ObjectMapper().writeValueAsString(workflowList));
 
-        // Update workflow status and stage to "Investigation" and "Completed"
-        Workflow workflow = new Workflow();
-        workflow.setClaim(claim);
-        WorkflowStage investigationStage = dataService.findByStageName(investigationReportDTO.getStageName());
-        workflow.setWorkflowStage(investigationStage);
+        workflowList.forEach(workflow -> {
+            log.info("looping through workflow object {}",workflow);
+            log.info("looping through workflow stage object {}",workflow.getWorkflowStage());
+            log.info("looping through workflow stageName object {}",workflow.getWorkflowStage().getStageName());
+            workflow.getWorkflowStage().getStageName().equalsIgnoreCase("investigation");
+        });
+        return utilities.successResponse("Investigation report successfully submitted.", null);
+    }
 
-        WorkflowStatus completedStatus = dataService.findByWorkStatus("Completed");
+    public void completeWorkflow(Workflow workflow){
+        WorkflowStatus completedStatus = dataService.findByWorkStatus("completed");
         workflow.setWorkflowStatus(completedStatus);
 
-        // Associate assigned user for this workflow stage
-        Optional<Users> assignedUserOptional = dataService.findByUserId(investigationReportDTO.getAssignedTo());
-        assignedUserOptional.ifPresent(workflow::setAssignedUser);
 
-        // Save workflow and update claim status
-        dataService.saveWorkflow(workflow);
-        ClaimStatus investigationStatus = dataService.findClaimStatusByName("pending");
-        claim.setClaimStatus(investigationStatus);
-        dataService.saveClaim(claim);
-
-        return utilities.successResponse("Investigation report successfully submitted.", null);
     }
 
 
