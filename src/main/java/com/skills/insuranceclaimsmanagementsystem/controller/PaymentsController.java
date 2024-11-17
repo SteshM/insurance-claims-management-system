@@ -18,13 +18,6 @@ public class PaymentsController {
         return paymentService.getPaymentStatus();
     }
 
-
-    @PutMapping("/payment/{id}/status")
-    public ResponseDTO updatePaymentStatus(@PathVariable int id, @RequestBody UpdatePaymentStatusDTO updatePaymentStatusDTO){
-        return paymentService.updatePaymentStatus(id,updatePaymentStatusDTO);
-
-    }
-
     @GetMapping("/payments")
     public ResponseDTO getPayments() {
         return paymentService.getPayments();

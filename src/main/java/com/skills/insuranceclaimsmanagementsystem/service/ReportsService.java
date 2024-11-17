@@ -1,7 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimReportRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimReportDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimReportReqDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.models.Claims;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;

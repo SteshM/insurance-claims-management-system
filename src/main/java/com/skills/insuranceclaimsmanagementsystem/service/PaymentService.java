@@ -1,6 +1,4 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.PaymentRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdatePaymentStatusDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentTypeResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
@@ -31,22 +29,7 @@ public class PaymentService {
         return utilities.successResponse("Success", typeResDTOS);
 
     }
-    public ResponseDTO updatePaymentStatus(int id, UpdatePaymentStatusDTO updatePaymentStatusDTO) {
-        Optional<Payments> payments = dataService.findByPaymentId(id);
-        if (payments.isEmpty()) {
-            return utilities.failedResponse(1,"Payment not found for the provided ID", null);
-        }
-        PaymentStatus paymentStatus = dataService.findByStatusName(updatePaymentStatusDTO.getStatusName());
-        if (paymentStatus.equals(payments.get().getStatus())) {
-            return utilities.failedResponse(1,"Payment already recorded for the provided ID", null);
-        }
-        payments.get().setStatus(paymentStatus);
-         var updatedPayment = dataService.savePayment(payments.get());
-         var paymentResDTO = modelMapper.map(updatedPayment, PaymentResDTO.class);
-         return utilities.successResponse("Payment recorded successfully", paymentResDTO);
 
-
-    }
 
     public ResponseDTO getPayments() {
         List<Payments>payments = dataService.fetchPayments();
