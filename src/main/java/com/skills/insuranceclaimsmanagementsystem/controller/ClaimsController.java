@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class ClaimsController {
     private final ClaimsService claimsService;
 
     @PostMapping("/claim")
-    public ResponseDTO submitClaim(@RequestBody ClaimRequestDTO claimRequestDTO ){
+    public ResponseDTO submitClaim(@Valid @RequestBody ClaimRequestDTO claimRequestDTO ){
        return claimsService.submitClaim(claimRequestDTO);
 
     }
@@ -39,18 +40,18 @@ public class ClaimsController {
     }
 
     @PostMapping("/claim/{id}/investigation-report")
-    public ResponseDTO claimInvestigationReport(@PathVariable int id, @RequestBody InvestigationReportDTO investigationReportDTO) throws JsonProcessingException {
+    public ResponseDTO claimInvestigationReport(@Valid @PathVariable int id, @RequestBody InvestigationReportDTO investigationReportDTO) throws JsonProcessingException {
         return claimsService.investigationReport(id,investigationReportDTO);
     }
 
     @PostMapping("/claim/{id}/approval")
-    public ResponseDTO claimApproval(@PathVariable int id){
+    public ResponseDTO claimApproval(@Valid @PathVariable int id){
         return claimsService.approveClaim(id);
 
     }
 
     @PostMapping("/claim/{id}/disbursement")
-    public ResponseDTO disbursePayment(@PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
+    public ResponseDTO disbursePayment(@Valid @PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
         return claimsService.disburseClaimPayment(id,paymentRequestDTO);
     }
 
