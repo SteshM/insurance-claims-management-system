@@ -134,6 +134,56 @@ public class ClaimsService {
     }
 
 
+    public ResponseDTO approveClaim(int id, ApprovalRequestDTO approvalRequestDTO) {
+        Optional<Claims> claimOptional = dataService.findByClaimId(id);
+
+        if (claimOptional.isEmpty()) {
+            return utilities.failedResponse(1, "Claim not found for the provided ID", null);
+        }
+
+        Claims claim = claimOptional.get();
+
+        // Check if the claim is eligible for approval based on its current status
+        if (!claim.getClaimStatus().getName().equalsIgnoreCase("pending")) {
+            return utilities.failedResponse(1, "Claim is not eligible for approval.", null);
+        }
+
+        // Check if the investigation workflow stage is completed
+        WorkflowStage investigationStage = dataService.findByStageName("Investigation");
+        Optional<Workflow> investigationWorkflowOpt = dataService.findWorkflowByClaimAndStage(claim, investigationStage);
+        if (investigationWorkflowOpt.isEmpty() ||
+                investigationWorkflowOpt.get().getWorkflowStatus() == null ||
+                !investigationWorkflowOpt.get().getWorkflowStatus().getStatusName().equalsIgnoreCase("Completed")) {
+            return utilities.failedResponse(1, "Claim investigation stage is not completed. Approval cannot proceed.", null);
+        }
+        // Update claim's status to "Approved"
+        ClaimStatus approvedStatus = dataService.findClaimStatusByName("approved");
+        claim.setClaimStatus(approvedStatus);
+        claim.setApprovalDate(new Date());
+        dataService.saveClaim(claim);
+
+        // Create and save a workflow entry for the approval stage
+        Workflow workflow = new Workflow();
+        workflow.setClaim(claim);
+
+        WorkflowStage approvalStage = dataService.findByStageName("Approval");
+        workflow.setWorkflowStage(approvalStage);
+
+        WorkflowStatus completedStatus = dataService.findByWorkStatus("Completed");
+        workflow.setWorkflowStatus(completedStatus);
+
+        // Set the user who approved the claim
+        Optional<Users> approverOptional = dataService.findByUserId(approvalRequestDTO.getApprovedBy());
+        if (approverOptional.isEmpty()) {
+            return utilities.failedResponse(1, "Approver not found.", null);
+        }
+        workflow.setAssignedUser(approverOptional.get());
+
+        dataService.saveWorkflow(workflow);
+
+        return utilities.successResponse("Claim successfully approved.", null);
+    }
+
 
 
 }
