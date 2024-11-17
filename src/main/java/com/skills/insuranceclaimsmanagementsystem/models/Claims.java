@@ -21,6 +21,8 @@ public class Claims {
     private BigDecimal amountClaimed;
     private boolean active;
     private Date dateCreated;
+    private Date dateInvestigationCompleted;
+    private Date approvalDate;
     private Date dateModified;
     private String createdBy;
     private String modifiedBy;
@@ -35,4 +37,7 @@ public class Claims {
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
     private List<Attachments> attachments;
+
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
+    private List<Workflow> workflows;
 }

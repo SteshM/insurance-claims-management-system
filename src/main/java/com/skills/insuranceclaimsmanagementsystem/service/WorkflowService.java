@@ -46,7 +46,7 @@ public class WorkflowService {
         Workflow workflow = new Workflow();
         workflow.setClaim(claim);
 
-        WorkflowStage workflowStage = dataService.findByStageName("investigation");
+        WorkflowStage workflowStage = dataService.findByStageName(workflowRequestDTO.getStageName());
         workflow.setWorkflowStage(workflowStage);
         WorkflowStatus workflowStatus = dataService.findByWorkStatus("in-progress");
         workflow.setWorkflowStatus(workflowStatus);

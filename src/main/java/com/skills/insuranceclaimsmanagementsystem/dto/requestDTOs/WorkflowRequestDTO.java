@@ -7,4 +7,5 @@ import lombok.Setter;
 @Getter
 public class WorkflowRequestDTO {
     private int assignedTo;
+    private String stageName;
 }
