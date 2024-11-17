@@ -1,6 +1,8 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ApprovalRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.InvestigationReportDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdateClaimDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
@@ -38,7 +40,18 @@ public class ClaimsController {
     public ResponseDTO getClaimStatus() throws JsonProcessingException {
         return claimsService.getClaimStatus();
     }
-//TODO
+
+    @PostMapping("/claim/{id}/investigation-report")
+    public ResponseDTO claimInvestigationReport(@PathVariable int id, @RequestBody InvestigationReportDTO investigationReportDTO){
+        return claimsService.investigationReport(id,investigationReportDTO);
+    }
+
+    @PostMapping("/claim/{id}/approval")
+    public ResponseDTO claimApproval(@PathVariable int id, @RequestBody ApprovalRequestDTO approvalRequestDTO){
+        return claimsService.approveClaim(id,approvalRequestDTO);
+
+    }
+
 
 
 

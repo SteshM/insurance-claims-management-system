@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ReportsController {
-    private final ReportsService reportsService;
-    @GetMapping("/claim/status")
-    public ResponseDTO claimStatus() {
-        return reportsService.getClaimByStatus();
-    }
+//    private final ReportsService reportsService;
+//    @GetMapping("/claim/status")
+//    public ResponseDTO claimStatus() {
+//        return reportsService.getClaimByStatus();
+//    }
 
 
 }

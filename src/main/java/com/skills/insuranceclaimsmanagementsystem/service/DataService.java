@@ -101,8 +101,8 @@ public class DataService {
     }
 
 
-    public WorkflowStatus findByWorkStatus(String in_progress) {
-        return workflowStatusRepo.findByStatusName(in_progress);
+    public WorkflowStatus findByWorkStatus(String name) {
+        return workflowStatusRepo.findByStatusName(name);
     }
 
     public Workflow saveWorkflow(Workflow workflow) {
@@ -123,4 +123,7 @@ public class DataService {
     }
 
 
+    public Optional<Workflow> findWorkflowByClaimAndStage(Claims claim, WorkflowStage investigationStage) {
+        return workflowRepo.findByClaimAndStage(claim,investigationStage);
+    }
 }
