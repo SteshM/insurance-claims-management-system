@@ -50,8 +50,8 @@ public class ClaimsController {
     }
 
     @PostMapping("/claim/{id}/disbursement")
-    public ResponseDTO disburseClaim(@PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
-        return claimsService.disburseClaim(id,paymentRequestDTO);
+    public ResponseDTO disbursePayment(@PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
+        return claimsService.disburseClaimPayment(id,paymentRequestDTO);
     }
 
 

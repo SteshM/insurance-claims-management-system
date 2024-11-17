@@ -183,7 +183,7 @@ public class ClaimsService {
 
         return utilities.successResponse("Claim successfully approved.", null);
     }
-    public ResponseDTO disburseClaim(int id, PaymentRequestDTO paymentRequestDTO) {
+    public ResponseDTO disburseClaimPayment(int id, PaymentRequestDTO paymentRequestDTO) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
         if (claimOptional.isEmpty()) {
             return utilities.failedResponse(1, "Claim not found for the provided ID", null);
