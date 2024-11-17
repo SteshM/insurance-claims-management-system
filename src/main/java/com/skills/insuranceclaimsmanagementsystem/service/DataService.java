@@ -124,6 +124,14 @@ public class DataService {
 
 
     public Optional<Workflow> findWorkflowByClaimAndStage(Claims claim, WorkflowStage investigationStage) {
-        return workflowRepo.findByClaimAndStage(claim,investigationStage);
+        return workflowRepo.findByClaimAndWorkflowStage(claim,investigationStage);
+    }
+
+    public Optional<Workflow> findWorkflowByClaimAndStageAndStatus(Claims claim, WorkflowStage workflowStage, WorkflowStatus workflowStatus) {
+        return workflowRepo.findByClaimAndWorkflowStageAndWorkflowStatus(claim,workflowStage,workflowStatus);
+    }
+
+    public WorkflowStage findWorkflowStageByName(String approval) {
+        return workflowStageRepo.findByStageName(approval);
     }
 }

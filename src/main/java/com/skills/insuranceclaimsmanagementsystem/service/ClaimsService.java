@@ -183,8 +183,51 @@ public class ClaimsService {
 
         return utilities.successResponse("Claim successfully approved.", null);
     }
+    public ResponseDTO disburseClaim(int id, PaymentRequestDTO paymentRequestDTO) {
+        Optional<Claims> claimOptional = dataService.findByClaimId(id);
+        if (claimOptional.isEmpty()) {
+            return utilities.failedResponse(1, "Claim not found for the provided ID", null);
+        }
 
+        Claims claim = claimOptional.get();
 
+        // Retrieve the 'Approval' stage and 'Completed' status as entities
+        WorkflowStage approvalStage = dataService.findWorkflowStageByName("Approval");
+        WorkflowStatus completedStatus = dataService.findByWorkStatus("Completed");
+
+        // Check if the claim's approval workflow is completed
+        Optional<Workflow> approvalWorkflowOpt = dataService.findWorkflowByClaimAndStageAndStatus(
+                claim, approvalStage, completedStatus);
+
+        if (approvalWorkflowOpt.isEmpty()) {
+            return utilities.failedResponse(1, "Claim approval stage is not completed. Disbursement cannot proceed.", null);
+        }
+
+        // Proceed with the rest of the payment disbursement logic
+        Payments payments = new Payments();
+        payments.setPaymentDate(paymentRequestDTO.getPaymentDate());
+        payments.setTransactionReference(paymentRequestDTO.getTransactionReference());
+        payments.setAmount(claim.getAmountClaimed());
+        payments.setClaim(claim);
+
+        // Set payment status to "Pending"
+        PaymentStatus paymentStatus = dataService.findByStatusName("pending");
+        payments.setStatus(paymentStatus);
+
+        // Save the payment and update claim status
+        Payments savedPayment = dataService.savePayment(payments);
+        claim.setClaimStatus(dataService.findClaimStatusByName("settled"));
+        dataService.saveClaim(claim);
+
+        // Update workflow status to completed
+        WorkflowStatus disbursedStatus = dataService.findByWorkStatus("Completed");
+        Workflow workflow = approvalWorkflowOpt.get();
+        workflow.setWorkflowStatus(disbursedStatus);
+        dataService.saveWorkflow(workflow);
+
+        var paymentResDTO = modelMapper.map(savedPayment, PaymentResDTO.class);
+        return utilities.successResponse("Payment successfully disbursed", paymentResDTO);
+    }
 
 }
 

@@ -4,5 +4,6 @@ import com.skills.insuranceclaimsmanagementsystem.models.WorkflowStage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WorkflowStageRepo extends JpaRepository<WorkflowStage, Long> {
-    WorkflowStage findByStageName(String investigation);
+    WorkflowStage findByStageName(String name);
+
 }

@@ -1,9 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ApprovalRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimRequestDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.InvestigationReportDTO;
-import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UpdateClaimDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.ClaimsService;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +49,10 @@ public class ClaimsController {
 
     }
 
+    @PostMapping("/claim/{id}/disbursement")
+    public ResponseDTO disburseClaim(@PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
+        return claimsService.disburseClaim(id,paymentRequestDTO);
+    }
 
 
 
