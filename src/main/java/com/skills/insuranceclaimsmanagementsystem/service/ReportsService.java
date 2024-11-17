@@ -1,11 +1,15 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
-
-
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimReportRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimReportDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.models.Claims;
+import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -13,8 +17,42 @@ import java.util.List;
 public class ReportsService {
 
     private final DataService dataService;
-//
-//    public ResponseDTO getClaimByStatus() {
-//        List<Claims>claims = dataService.fetchClaimsByStatus();
-//    }
+    private final Utilities utilities;
+
+    public ResponseDTO generateClaimReport(ClaimReportRequestDTO claimReportRequestDTO) {
+        //Fetch claims by claim status
+        List<Claims> claims = dataService.fetchClaims();
+
+        //Filter claims with 'approved' status
+        List<Claims> approvedClaims = claims.stream()
+                .filter(claim -> claim.getClaimStatus().getName().equalsIgnoreCase(claimReportRequestDTO.getName()))
+                .toList();
+
+        //Calculate total number of claims and total amount paid
+        int totalClaims = approvedClaims.size();
+        BigDecimal totalAmountPaid = approvedClaims.stream()
+                .map(Claims::getAmountClaimed)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        //Breakdown by claim type
+        LinkedHashMap<String, Integer> claimBreakdown = new LinkedHashMap<>();
+        for (Claims claim : approvedClaims) {
+            String claimTypeName = claim.getClaimType().getName(); // Only get the name as a String
+            claimBreakdown.put(claimTypeName, claimBreakdown.getOrDefault(claimTypeName, 0) + 1); // Increment count for this claim type
+        }
+
+        //Prepare ClaimReportDTO
+        ClaimReportDTO claimReportDTO = new ClaimReportDTO();
+        claimReportDTO.setName(claimReportRequestDTO.getName());
+        claimReportDTO.setTotalClaims(BigDecimal.valueOf(totalClaims));
+        claimReportDTO.setTotalAmountPaid(totalAmountPaid);
+        claimReportDTO.setClaimBreakdown(claimBreakdown);
+
+        //  Return response
+        return utilities.successResponse("Claim report generated successfully", claimReportDTO);
+    }
+
+
+
 }
+
