@@ -44,8 +44,8 @@ public class ClaimsController {
     }
 
     @PostMapping("/claim/{id}/approval")
-    public ResponseDTO claimApproval(@PathVariable int id, @RequestBody ApprovalRequestDTO approvalRequestDTO){
-        return claimsService.approveClaim(id,approvalRequestDTO);
+    public ResponseDTO claimApproval(@PathVariable int id){
+        return claimsService.approveClaim(id);
 
     }
 

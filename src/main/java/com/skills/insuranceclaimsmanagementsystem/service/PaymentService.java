@@ -31,27 +31,6 @@ public class PaymentService {
         return utilities.successResponse("Success", typeResDTOS);
 
     }
-
-    public ResponseDTO recordPayment(int id, PaymentRequestDTO paymentRequestDTO) {
-        Payments payments = new Payments();
-        payments.setPaymentDate(paymentRequestDTO.getPaymentDate());
-        payments.setTransactionReference(paymentRequestDTO.getTransactionReference());
-        Optional<Claims> claimOptional = dataService.findByClaimId(id);
-
-        if (claimOptional.isEmpty()) {
-            return utilities.failedResponse(1,"Claim not found for the provided ID", null);
-        }
-
-        Claims claim = claimOptional.get();
-        payments.setAmount(claim.getAmountClaimed());
-        payments.setClaim(claim);
-        PaymentStatus paymentStatus = dataService.findByStatusName("pending");
-        payments.setStatus(paymentStatus);
-        Payments savedPayment = dataService.savePayment(payments);
-        var paymentResDTO = modelMapper.map(savedPayment, PaymentResDTO.class);
-        return utilities.successResponse("Payment recorded successfully", paymentResDTO);
-    }
-
     public ResponseDTO updatePaymentStatus(int id, UpdatePaymentStatusDTO updatePaymentStatusDTO) {
         Optional<Payments> payments = dataService.findByPaymentId(id);
         if (payments.isEmpty()) {

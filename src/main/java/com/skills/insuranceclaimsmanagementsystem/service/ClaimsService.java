@@ -112,7 +112,7 @@ public class ClaimsService {
 
         // Update claim's investigation completion date
         claim.setDateInvestigationCompleted(new Date());
-        claim.setAttachments(attachments);
+        claim.getAttachments().addAll(attachments);
         dataService.saveClaim(claim);
         var workflowList = claim.getWorkflows();
         log.info("Retrieved {}: {}",workflowList.size(),new ObjectMapper().writeValueAsString(workflowList));
@@ -121,20 +121,20 @@ public class ClaimsService {
             log.info("looping through workflow object {}",workflow);
             log.info("looping through workflow stage object {}",workflow.getWorkflowStage());
             log.info("looping through workflow stageName object {}",workflow.getWorkflowStage().getStageName());
-            workflow.getWorkflowStage().getStageName().equalsIgnoreCase("investigation");
+            if (workflow.getWorkflowStage().getStageName().equalsIgnoreCase("investigation")){
+                log.info("Got an investigation workflow. Close it");
+                this.completeWorkflow(workflow);
+
+            }
+
         });
         return utilities.successResponse("Investigation report successfully submitted.", null);
-    }
-
-    public void completeWorkflow(Workflow workflow){
-        WorkflowStatus completedStatus = dataService.findByWorkStatus("completed");
-        workflow.setWorkflowStatus(completedStatus);
-
 
     }
 
 
-    public ResponseDTO approveClaim(int id, ApprovalRequestDTO approvalRequestDTO) {
+
+    public ResponseDTO approveClaim(int id) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
 
         if (claimOptional.isEmpty()) {
@@ -143,46 +143,23 @@ public class ClaimsService {
 
         Claims claim = claimOptional.get();
 
-        // Check if the claim is eligible for approval based on its current status
-        if (!claim.getClaimStatus().getName().equalsIgnoreCase("pending")) {
-            return utilities.failedResponse(1, "Claim is not eligible for approval.", null);
-        }
-
-        // Check if the investigation workflow stage is completed
-        WorkflowStage investigationStage = dataService.findByStageName("Investigation");
-        Optional<Workflow> investigationWorkflowOpt = dataService.findWorkflowByClaimAndStage(claim, investigationStage);
-        if (investigationWorkflowOpt.isEmpty() ||
-                investigationWorkflowOpt.get().getWorkflowStatus() == null ||
-                !investigationWorkflowOpt.get().getWorkflowStatus().getStatusName().equalsIgnoreCase("Completed")) {
-            return utilities.failedResponse(1, "Claim investigation stage is not completed. Approval cannot proceed.", null);
-        }
-        // Update claim's status to "Approved"
+        // Update the claim's status to "Approved"
         ClaimStatus approvedStatus = dataService.findClaimStatusByName("approved");
         claim.setClaimStatus(approvedStatus);
         claim.setApprovalDate(new Date());
         dataService.saveClaim(claim);
+        var workflows = claim.getWorkflows();
+        workflows.forEach(workflow -> {
+            if (workflow.getWorkflowStage().getStageName().equalsIgnoreCase("approval")){
+                log.info("Got an approval workflow. Close it");
+                this.completeWorkflow(workflow);
+            }
 
-        // Create and save a workflow entry for the approval stage
-        Workflow workflow = new Workflow();
-        workflow.setClaim(claim);
-
-        WorkflowStage approvalStage = dataService.findByStageName("Approval");
-        workflow.setWorkflowStage(approvalStage);
-
-        WorkflowStatus completedStatus = dataService.findByWorkStatus("Completed");
-        workflow.setWorkflowStatus(completedStatus);
-
-        // Set the user who approved the claim
-        Optional<Users> approverOptional = dataService.findByUserId(approvalRequestDTO.getApprovedBy());
-        if (approverOptional.isEmpty()) {
-            return utilities.failedResponse(1, "Approver not found.", null);
-        }
-        workflow.setAssignedUser(approverOptional.get());
-
-        dataService.saveWorkflow(workflow);
+        });
 
         return utilities.successResponse("Claim successfully approved.", null);
     }
+
     public ResponseDTO disburseClaimPayment(int id, PaymentRequestDTO paymentRequestDTO) {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
         if (claimOptional.isEmpty()) {
@@ -190,43 +167,38 @@ public class ClaimsService {
         }
 
         Claims claim = claimOptional.get();
-
-        // Retrieve the 'Approval' stage and 'Completed' status as entities
-        WorkflowStage approvalStage = dataService.findWorkflowStageByName("Approval");
-        WorkflowStatus completedStatus = dataService.findByWorkStatus("Completed");
-
-        // Check if the claim's approval workflow is completed
-        Optional<Workflow> approvalWorkflowOpt = dataService.findWorkflowByClaimAndStageAndStatus(
-                claim, approvalStage, completedStatus);
-
-        if (approvalWorkflowOpt.isEmpty()) {
-            return utilities.failedResponse(1, "Claim approval stage is not completed. Disbursement cannot proceed.", null);
-        }
+        var workflowList = claim.getWorkflows();
+        workflowList.forEach(workflow -> {
+            if (workflow.getWorkflowStage().getStageName().equalsIgnoreCase("settlement")){
+                this.completeWorkflow(workflow);
+            }
+        });
 
         // Proceed with the rest of the payment disbursement logic
         Payments payments = new Payments();
-        payments.setPaymentDate(paymentRequestDTO.getPaymentDate());
+        payments.setPaymentDate(new Date());
         payments.setTransactionReference(paymentRequestDTO.getTransactionReference());
         payments.setAmount(claim.getAmountClaimed());
         payments.setClaim(claim);
 
         // Set payment status to "Pending"
-        PaymentStatus paymentStatus = dataService.findByStatusName("pending");
+        PaymentStatus paymentStatus = dataService.findByStatusName("disbursed");
         payments.setStatus(paymentStatus);
 
         // Save the payment and update claim status
-        Payments savedPayment = dataService.savePayment(payments);
+        dataService.savePayment(payments);
         claim.setClaimStatus(dataService.findClaimStatusByName("settled"));
         dataService.saveClaim(claim);
+        return utilities.successResponse("Payment successfully disbursed", null);
+    }
 
-        // Update workflow status to completed
-        WorkflowStatus disbursedStatus = dataService.findByWorkStatus("Completed");
-        Workflow workflow = approvalWorkflowOpt.get();
-        workflow.setWorkflowStatus(disbursedStatus);
+
+    public void completeWorkflow(Workflow workflow){
+        WorkflowStatus completedStatus = dataService.findByWorkStatus("completed");
+        workflow.setWorkflowStatus(completedStatus);
         dataService.saveWorkflow(workflow);
 
-        var paymentResDTO = modelMapper.map(savedPayment, PaymentResDTO.class);
-        return utilities.successResponse("Payment successfully disbursed", paymentResDTO);
+
     }
 
 }

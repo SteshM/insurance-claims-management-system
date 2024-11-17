@@ -9,8 +9,5 @@ import java.util.Date;
 @Setter
 @Getter
 public class PaymentRequestDTO {
-    private BigDecimal amount;
-    private Date paymentDate;
     private String transactionReference;
-    private int settledBy;
 }

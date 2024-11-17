@@ -18,10 +18,6 @@ public class PaymentsController {
         return paymentService.getPaymentStatus();
     }
 
-    @PostMapping("/payment/{id}")
-    public ResponseDTO recordPayment(@PathVariable int id, @RequestBody PaymentRequestDTO paymentRequestDTO){
-        return paymentService.recordPayment(id,paymentRequestDTO);
-    }
 
     @PutMapping("/payment/{id}/status")
     public ResponseDTO updatePaymentStatus(@PathVariable int id, @RequestBody UpdatePaymentStatusDTO updatePaymentStatusDTO){

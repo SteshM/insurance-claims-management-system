@@ -40,4 +40,7 @@ public class Claims {
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
     private List<Workflow> workflows;
+
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
+    private List<Payments> payments;
 }
