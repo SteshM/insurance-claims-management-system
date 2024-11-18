@@ -4,6 +4,7 @@ import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WorkflowService {
@@ -56,6 +58,14 @@ public class WorkflowService {
         ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
         claim.setClaimStatus(claimStatus);
         dataService.saveClaim(claim);
+        if (workflowRequestDTO.getStageName().equalsIgnoreCase("disbursement")){
+            log.info("This is a disbursement workflow. Proceed to initiate a payment");
+            var payment = new Payments();
+            payment.setClaim(claim);
+            payment.setAmount(claim.getAmountClaimed());
+            payment.setStatus(dataService.findByStatusName("pending"));
+            dataService.savePayment(payment);
+        }
         var workflowResDTO = modelMapper.map(initiatedWorkflow, WorkflowResDTO.class);
         return utilities.successResponse("successfully initiated workflow", workflowResDTO);
     }
