@@ -14,24 +14,24 @@ public class WorkflowController {
     private final WorkflowService workflowService;
 
     @GetMapping("/workflow-status")
-    @PreAuthorize("hasAuthority(CAN_VIEW_WORKFLOW_STATUS)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW_STATUS')")
     public ResponseDTO getWorkflowStatus() {
         return workflowService.getWorkflowStatus();
     }
 
     @GetMapping("/workflow-stages")
-    @PreAuthorize("hasAuthority(CAN_VIEW_WORKFLOW_STAGES)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW_STAGES')")
     public ResponseDTO getWorkflowStages() {
         return workflowService.getWorkflowStages();
     }
     @PostMapping("/claim/{id}/workflow")
-    @PreAuthorize("hasAuthority(CAN_INITIATE_WORKFLOW)")
+    @PreAuthorize("hasAuthority('CAN_INITIATE_WORKFLOW')")
     public ResponseDTO initiateWorkflow(@PathVariable int id, @RequestBody WorkflowRequestDTO workflowRequestDTO) {
         return workflowService.initiateWorkflow(id,workflowRequestDTO);
     }
 
     @GetMapping("/claim/{id}/workflow")
-    @PreAuthorize("hasAuthority(CAN_VIEW_WORKFLOW)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW')")
     public ResponseDTO getWorkflow(@PathVariable int id) {
         return workflowService.retrieveClaimHistory(id);
     }

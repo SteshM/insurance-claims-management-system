@@ -53,30 +53,34 @@ public class AuthenticationService implements UserDetailsService {
 
 
     public ResponseDTO login(@Valid LoginDTO loginDTO) {
-            // Retrieve user by email
-            Users user = dataService.findByUsername(loginDTO.getUsername());
-            if (user==null){
-                return utilities.failedResponse(01,"Account doesn't exist, proceed to register",null);
-            }
-            log.info("Email is {}", loginDTO.getUsername());
-            // Check if user exists
+        // Retrieve user by email
+        Users user = dataService.findByUsername(loginDTO.getUsername());
+        if (user == null) {
+            return utilities.failedResponse(01, "Account doesn't exist, proceed to register", null);
+        }
+        log.info("Username is {}", loginDTO.getUsername());
+
         // Verify password
-        log.info("user {}",user.getUsername());
-        if (passwordEncoder.encode(loginDTO.getPassword()).matches(user.getPassword())) {
+        log.info("user {}", user.getUsername());
+        if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             // Create authorities
             Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) user.getAuthorities();
+
             // Create User object for token generation
             CustomUserDetails customUserDetails = new CustomUserDetails(user.getUsername(), user.getPassword(), authorities);
+
             // Generate token
             String token = jwtUtil.generateToken(customUserDetails);
+
             // Prepare response
             Map<String, String> res = new HashMap<>();
             res.put("token", token);
-            res.put("email", loginDTO.getUsername());
+            res.put("username", loginDTO.getUsername());
 
             return utilities.successResponse("Successfully logged in", res);
         } else {
             return utilities.failedResponse(1, "Password Mismatch", null);
         }
     }
+
 }

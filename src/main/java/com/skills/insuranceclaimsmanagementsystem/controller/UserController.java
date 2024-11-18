@@ -14,23 +14,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/roles")
-    @PreAuthorize("hasAuthority(CAN_VIEW_ROLES)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_ROLES')")
     public ResponseDTO getRoles() {
         return userService.getRoles();
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority(CAN_VIEW_USERS)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_USERS')")
     public ResponseDTO getUsers() {
         return userService.getUsers();
     }
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasAuthority(CAN_VIEW_USER)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_USER')")
     public ResponseDTO getUser(@PathVariable int id) {
         return userService.getUser(id);
     }
     @PutMapping("/user/{id}")
-    @PreAuthorize("hasAuthority(CAN_UPDATE_USERS)")
+    @PreAuthorize("hasAuthority('CAN_UPDATE_USERS')")
     public ResponseDTO updateUser(@PathVariable int id, @RequestBody UserDTO userDTO){
         return userService.updateUser(id,userDTO);
     }

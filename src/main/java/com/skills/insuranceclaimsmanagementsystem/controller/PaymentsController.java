@@ -15,19 +15,19 @@ public class PaymentsController {
     private final PaymentService paymentService;
 
     @GetMapping("/payment-status")
-    @PreAuthorize("hasAuthority(CAN_VIEW_PAYMENT_STATUS)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_PAYMENT_STATUS')")
     public ResponseDTO getPaymentStatus() {
         return paymentService.getPaymentStatus();
     }
 
     @GetMapping("/payments")
-    @PreAuthorize("hasAuthority(CAN_VIEW_PAYMENTS)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_PAYMENTS')")
     public ResponseDTO getPayments() {
         return paymentService.getPayments();
     }
 
     @GetMapping("/payments/claim/{id}")
-    @PreAuthorize("hasAuthority(CAN_VIEW_CLAIM_PAYMENTS)")
+    @PreAuthorize("hasAuthority('CAN_VIEW_CLAIM_PAYMENTS')")
     public ResponseDTO claimPayments(@PathVariable int id) {
         return paymentService.getClaimPayments(id);
     }
