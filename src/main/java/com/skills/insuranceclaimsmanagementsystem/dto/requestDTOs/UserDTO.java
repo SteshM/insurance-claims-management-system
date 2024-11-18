@@ -21,5 +21,10 @@ public class UserDTO {
     private Date dateOfBirth;
     @NotNull(message = "gender is required")
     private String gender;
+    @NotNull(message = "password is required")
     private String password;
+    @NotNull(message = "roleId is required")
+    private int roleId;
+
+
 }

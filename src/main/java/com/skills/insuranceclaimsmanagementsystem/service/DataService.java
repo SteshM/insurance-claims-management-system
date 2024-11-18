@@ -123,6 +123,19 @@ public class DataService {
     }
 
 
+    public Users saveUser(Users user) {
+        return userRepo.save(user);
+    }
 
+    public Roles findRoleByName(String name) {
+        return rolesRepo.findByName(name);
+    }
 
+    public Roles saveRole(Roles role) {
+        return rolesRepo.save(role);
+    }
+
+    public Optional<Roles> findById(int id) {
+        return rolesRepo.findById(id);
+    }
 }
