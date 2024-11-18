@@ -2,6 +2,7 @@ package com.skills.insuranceclaimsmanagementsystem.utils;
 import com.skills.insuranceclaimsmanagementsystem.security.CustomUserDetails;
 import com.skills.insuranceclaimsmanagementsystem.service.DataService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

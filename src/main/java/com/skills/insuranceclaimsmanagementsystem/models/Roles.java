@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -20,4 +23,8 @@ public class Roles {
     private String createdBy;
     private String modifiedBy;
     private boolean active;
+
+    @ElementCollection(targetClass = Authority.class)
+    @Enumerated(EnumType.STRING)
+    private Set<Authority> authorities = new HashSet<>();
 }

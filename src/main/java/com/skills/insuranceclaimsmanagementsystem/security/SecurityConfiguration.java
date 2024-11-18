@@ -1,6 +1,4 @@
 package com.skills.insuranceclaimsmanagementsystem.security;
-
-
 import com.skills.insuranceclaimsmanagementsystem.utils.JwtUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,6 +28,7 @@ import java.util.List;
 @Configuration
 @Setter
 @Getter
+@EnableMethodSecurity
 public class SecurityConfiguration {
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -48,7 +48,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers("/v1/**"
+                        .requestMatchers("/api/**","/reports/**"
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(new JwtAuthFilter(jwtUtil ), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService ), UsernamePasswordAuthenticationFilter.class)
                 .cors((cors) -> cors
                         .configurationSource(request-> {
                             CorsConfiguration configuration = new CorsConfiguration();

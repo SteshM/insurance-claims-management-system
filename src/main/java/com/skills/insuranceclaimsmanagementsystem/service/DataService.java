@@ -138,4 +138,8 @@ public class DataService {
     public Optional<Roles> findById(int id) {
         return rolesRepo.findById(id);
     }
+
+    public Users findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }
