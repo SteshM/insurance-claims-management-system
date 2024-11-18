@@ -76,8 +76,10 @@ http://localhost:8080/api/customer/claim
 }
 ```
 ```
+```
 
 ##Sample Response
+```
 ```
 ```
 ```
@@ -217,13 +219,13 @@ http://localhost:8080/api/insurer/claim/1/workflow
 }
 ```
 ```
-
+```
 ##Sample Response
 ```
 ```
 ```
 ```
-
+```
 
 {
 "statusCode": "00",
@@ -530,16 +532,19 @@ http://localhost:8080/api/insurer/claim/status```
 ```
 ##Sample Request
 
-
+```
 ```
 
 
 http://localhost:8080/api/insurer/claim/type
 ```
 
+
 ```
 
 ##Sample Response
+```
+```
 ```
 ```
 ```
@@ -572,6 +577,8 @@ http://localhost:8080/api/insurer/users
 ```
 ```
 ```
+```
+```
 
 {
     "statusCode": "00",
@@ -601,18 +608,20 @@ http://localhost:8080/api/insurer/users
 }
 ```
 
+
+```
 ```
 ```
 ##Sample Request
 ```
 ```
 
-
+```
 http://localhost:8080/api/insurer/user/1
-```
+
 ```
 
-
+```
 ##Sample Response
 
 ```
