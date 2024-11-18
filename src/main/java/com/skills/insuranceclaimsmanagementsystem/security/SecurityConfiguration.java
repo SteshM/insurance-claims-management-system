@@ -1,4 +1,5 @@
 package com.skills.insuranceclaimsmanagementsystem.security;
+import com.skills.insuranceclaimsmanagementsystem.service.AuthenticationService;
 import com.skills.insuranceclaimsmanagementsystem.utils.JwtUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,8 @@ public class SecurityConfiguration {
 
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    AuthenticationService authenticationService;
 
 
     public void userDetailsService(AuthenticationManagerBuilder authenticationManagerBuilder)throws Exception
@@ -59,7 +62,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService ), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthFilter(jwtUtil,authenticationService ), UsernamePasswordAuthenticationFilter.class)
                 .cors((cors) -> cors
                         .configurationSource(request-> {
                             CorsConfiguration configuration = new CorsConfiguration();

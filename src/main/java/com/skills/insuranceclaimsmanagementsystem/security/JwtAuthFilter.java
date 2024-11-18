@@ -1,4 +1,5 @@
 package com.skills.insuranceclaimsmanagementsystem.security;
+import com.skills.insuranceclaimsmanagementsystem.service.AuthenticationService;
 import com.skills.insuranceclaimsmanagementsystem.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final AuthenticationService authenticationService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // If username is extracted and there is no existing authentication in the context
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Fetch user details from the database or wherever they are stored
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = authenticationService.loadUserByUsername(username);
 
             // Validate the token and get user details if valid
             if (jwtUtil.validateToken(token, userDetails)) {

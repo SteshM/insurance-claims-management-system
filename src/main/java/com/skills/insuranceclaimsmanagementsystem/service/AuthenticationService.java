@@ -49,7 +49,7 @@ public class AuthenticationService implements UserDetailsService {
         user.setRoles(roles);
         var savedUser = dataService.saveUser(user);
         var userResDTO = modelMapper.map(savedUser, UserResDTO.class);
-        return utilities.successResponse("account created successfully",userResDTO);
+        return utilities.successResponse("account created successfully",savedUser);
     }
 
 

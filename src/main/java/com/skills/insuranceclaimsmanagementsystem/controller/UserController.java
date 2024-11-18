@@ -1,6 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.controller;
 
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.AuthDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.RoleDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UserDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.service.UserService;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @PostMapping("/insurer/role")
+    public ResponseDTO createRole(@RequestBody RoleDTO roleDTO) {
+        return userService.createRole(roleDTO);
+    }
 
     @GetMapping("/insurer/roles")
     public ResponseDTO getRoles() {

@@ -1,6 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.AuthDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.RoleDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UserDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.RolesResDTO;
@@ -80,4 +81,10 @@ public class UserService {
         return utilities.successResponse("Successfully assigned authority", users.get());
     }
 
+    public ResponseDTO createRole(RoleDTO roleDTO) {
+        Roles role = modelMapper.map(roleDTO, Roles.class);
+        role.getAuthorities().addAll(roleDTO.getAuthorities());
+        dataService.saveRole(role);
+        return utilities.successResponse("Successfully created role", role);
+    }
 }

@@ -7,10 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Setter
@@ -34,7 +32,7 @@ public class Users implements UserDetails {
         private String createdBy;
         private Date dateModified ;
         private String modifiedBy;
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "user_role",
                 joinColumns = @JoinColumn(
@@ -44,7 +42,7 @@ public class Users implements UserDetails {
                         name = "role_id", referencedColumnName = "id"
                 )
         )
-        private List<Roles> roles;
+        private Collection<Roles> roles;
 
 
         @Override
@@ -52,13 +50,12 @@ public class Users implements UserDetails {
                 return authoritiesInAllRoles().stream().map(SimpleGrantedAuthority::new).toList();
         }
 
-        public List<String> authoritiesInAllRoles(){
-                List<String> authorities = new ArrayList<>();
-                for(Roles role : roles){
-                        for(Authority authority : role.getAuthorities()){
-                               authorities.add(authority.name());
-                        }
-                }
-                return authorities;
+        public Set<String> authoritiesInAllRoles() {
+                return this.roles.stream()
+                        .flatMap(role -> role.getAuthorities().stream()) // Stream over authorities of each role
+                        .map(Enum::name) // Use Enum::name if Authority is an enum
+                        .collect(Collectors.toSet()); // Collect into a set to ensure uniqueness
         }
+
+
 }

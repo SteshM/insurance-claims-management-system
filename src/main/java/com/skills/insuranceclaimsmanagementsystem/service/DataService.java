@@ -135,4 +135,8 @@ public class DataService {
     public Users findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
+    public Roles saveRole(Roles role) {
+        return rolesRepo.save(role);
+    }
 }

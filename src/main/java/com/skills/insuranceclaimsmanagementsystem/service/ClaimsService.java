@@ -5,6 +5,7 @@ import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
 import com.skills.insuranceclaimsmanagementsystem.utils.Utilities;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ClaimsService {
     private final DataService dataService;
     private final Utilities utilities;
