@@ -1,4 +1,5 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
+import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.WorkflowRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
@@ -19,13 +20,14 @@ public class WorkflowService {
     ModelMapper modelMapper = new ModelMapper();
     private final DataService dataService;
     private final Utilities utilities;
+    private final SystemConfigs systemConfigs;
 
     public ResponseDTO getWorkflowStatus() {
         List<WorkflowStatus>statuses = dataService.fetchWorkflowStatus();
         List<WorkStatusResDTO>workStatusResDTOS =statuses.stream().map(
                 workflowStatus -> modelMapper.map(workflowStatus, WorkStatusResDTO.class)
         ).toList();
-        return utilities.successResponse("successfully retrieved workflow status", workStatusResDTOS);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), workStatusResDTOS);
     }
 
 
@@ -34,7 +36,7 @@ public class WorkflowService {
         List<WorkflowStageResDTO>stageResDTOS = stages.stream().map(
                 workflowStage -> modelMapper.map(workflowStage, WorkflowStageResDTO.class)
         ).toList();
-        return utilities.successResponse("successfully retrieved workflow stages", stageResDTOS);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), stageResDTOS);
     }
 
 
@@ -42,7 +44,7 @@ public class WorkflowService {
         Optional<Claims> claimOptional = dataService.findByClaimId(id);
 
         if (claimOptional.isEmpty()) {
-            return utilities.failedResponse(1, "Claim not found for the provided ID", null);
+            return utilities.failedResponse(systemConfigs.getFailedStatusCode(), "Claim not found for the provided ID", null);
         }
         var claim = claimOptional.get();
         Workflow workflow = new Workflow();
@@ -67,7 +69,7 @@ public class WorkflowService {
             dataService.savePayment(payment);
         }
         var workflowResDTO = modelMapper.map(initiatedWorkflow, WorkflowResDTO.class);
-        return utilities.successResponse("successfully initiated workflow", workflowResDTO);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), workflowResDTO);
     }
 
 
@@ -82,7 +84,7 @@ public class WorkflowService {
                 .map(
                         workflow -> modelMapper.map(workflow, WorkflowResDTO.class)
                 ).toList();
-        return utilities.successResponse("successfully retrieved workflow", workflowResDTOS);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), workflowResDTOS);
 
     }
 

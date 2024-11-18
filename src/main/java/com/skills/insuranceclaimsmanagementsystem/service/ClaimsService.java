@@ -1,6 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.*;
 import com.skills.insuranceclaimsmanagementsystem.models.*;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class ClaimsService {
     private final DataService dataService;
     private final Utilities utilities;
+    private final SystemConfigs systemConfigs;
 
     ModelMapper modelMapper = new ModelMapper();
     ObjectMapper objectMapper = new ObjectMapper();
@@ -75,7 +77,7 @@ public class ClaimsService {
         log.info("Retrieving claim with ID: {}", id);
         Optional<Claims> claims = dataService.findByClaimId(id);
         if (claims.isEmpty()) {
-            return utilities.failedResponse(1,"Claim not found with ID: " + id,null);
+            return utilities.failedResponse(systemConfigs.getFailedStatusCode(), systemConfigs.getSuccessMessage(),null);
         }
 
         var claimResDTO = modelMapper.map(claims.get(),ClaimResDTO.class);

@@ -1,4 +1,5 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
+import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.PaymentTypeResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
@@ -19,6 +20,7 @@ public class PaymentService {
     ModelMapper modelMapper = new ModelMapper();
     private final DataService dataService;
     private final Utilities utilities;
+    private final SystemConfigs systemConfigs;
 
     public ResponseDTO getPaymentStatus() {
         List<PaymentStatus>paymentStatuses = dataService.fetchStatuses();
@@ -26,7 +28,7 @@ public class PaymentService {
                 .map(
                        paymentStatus -> modelMapper.map(paymentStatus, PaymentTypeResDTO.class)
                 ).toList();
-        return utilities.successResponse("Success", typeResDTOS);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), typeResDTOS);
 
     }
 
@@ -36,7 +38,7 @@ public class PaymentService {
         List<PaymentResDTO>paymentResDTOS = payments.stream().map(
                 payments1 -> modelMapper.map(payments1, PaymentResDTO.class)
         ).toList();
-    return utilities.successResponse("Success", paymentResDTOS);
+    return utilities.successResponse(systemConfigs.getSuccessMessage(), paymentResDTOS);
 }
 
     public ResponseDTO getClaimPayments(int id) {
@@ -49,7 +51,7 @@ public class PaymentService {
         List<PaymentResDTO>paymentResDTOList = payments.stream().map(
                 payments1 -> modelMapper.map(payments1, PaymentResDTO.class)
         ).toList();
-        return utilities.successResponse("Success", paymentResDTOList);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), paymentResDTOList);
 
     }
 }

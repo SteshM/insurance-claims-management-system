@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/allow/**"
                         ).permitAll()
                         .requestMatchers("/api/customers/**").hasAnyAuthority("CUSTOMER")
-                        .requestMatchers("/api/insurer/**").hasAnyAuthority("INSURER")
+                        .requestMatchers("/api/insurer/**").hasAnyAuthority("insurer")
                         .anyRequest().authenticated()
                 )
 

@@ -1,5 +1,6 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 
+import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.LoginDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.UserDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
@@ -32,6 +33,7 @@ public class AuthenticationService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     ModelMapper modelMapper = new ModelMapper();
+    private final SystemConfigs systemConfigs;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -49,7 +51,7 @@ public class AuthenticationService implements UserDetailsService {
         user.setRoles(roles);
         var savedUser = dataService.saveUser(user);
         var userResDTO = modelMapper.map(savedUser, UserResDTO.class);
-        return utilities.successResponse("account created successfully",savedUser);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), userResDTO);
     }
 
 
@@ -77,9 +79,9 @@ public class AuthenticationService implements UserDetailsService {
             res.put("token", token);
             res.put("username", loginDTO.getUsername());
 
-            return utilities.successResponse("Successfully logged in", res);
+            return utilities.successResponse(systemConfigs.getSuccessMessage(), res);
         } else {
-            return utilities.failedResponse(1, "Password Mismatch", null);
+            return utilities.failedResponse(systemConfigs.getFailedStatusCode(), "Password Mismatch", null);
         }
     }
 

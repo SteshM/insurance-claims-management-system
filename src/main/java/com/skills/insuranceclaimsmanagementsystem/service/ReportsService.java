@@ -1,4 +1,5 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
+import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimReportRequestDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimReportDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
@@ -17,6 +18,7 @@ public class ReportsService {
 
     private final DataService dataService;
     private final Utilities utilities;
+    private final SystemConfigs systemConfigs;
 
 
     public ResponseDTO generateClaimReportByClaimStatus(ClaimReportRequestDTO claimReportRequestDTO) {
@@ -48,7 +50,7 @@ public class ReportsService {
         claimReportDTO.setClaimBreakdown(claimBreakdown);
 
         //  Return response
-        return utilities.successResponse("Claim report generated successfully", claimReportDTO);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), claimReportDTO);
     }
 
     public ResponseDTO generateClaimReportByType(ClaimReportRequestDTO claimReportRequestDTO) {
@@ -74,7 +76,7 @@ public class ReportsService {
         claimReportDTO.setTotalAmountPaid(totalAmountPaid);
 
         // Return response
-        return utilities.successResponse("Claim report generated successfully", claimReportDTO);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), claimReportDTO);
     }
 
 

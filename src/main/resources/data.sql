@@ -72,3 +72,4 @@ INSERT INTO workflowStage (stageName) VALUES ('investigation');
 INSERT INTO workflowStage (stageName) VALUES ('approval');
 INSERT INTO workflowStage (stageName) VALUES ('settlement');
 
+

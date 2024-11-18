@@ -24,7 +24,4 @@ public class Roles {
     private String modifiedBy;
     private boolean active;
 
-    @ElementCollection(targetClass = Authority.class)
-    @Enumerated(EnumType.STRING)
-    private Set<Authority> authorities = new HashSet<>();
 }
