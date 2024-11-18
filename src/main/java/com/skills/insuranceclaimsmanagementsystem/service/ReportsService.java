@@ -1,6 +1,7 @@
 package com.skills.insuranceclaimsmanagementsystem.service;
 import com.skills.insuranceclaimsmanagementsystem.configurations.SystemConfigs;
 import com.skills.insuranceclaimsmanagementsystem.dto.requestDTOs.ClaimReportRequestDTO;
+import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimBreakdownResDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ClaimReportDTO;
 import com.skills.insuranceclaimsmanagementsystem.dto.responseDTOs.ResponseDTO;
 import com.skills.insuranceclaimsmanagementsystem.models.Claims;
@@ -70,13 +71,13 @@ public class ReportsService {
 
 
         // Prepare ClaimReportDTO
-        ClaimReportDTO claimReportDTO = new ClaimReportDTO();
-        claimReportDTO.setName(claimReportRequestDTO.getName());
-        claimReportDTO.setTotalClaims(BigDecimal.valueOf(totalClaims));
-        claimReportDTO.setTotalAmountPaid(totalAmountPaid);
+        ClaimBreakdownResDTO claimBreakdownResDTO = new ClaimBreakdownResDTO();
+        claimBreakdownResDTO.setName(claimReportRequestDTO.getName());
+        claimBreakdownResDTO.setTotalClaims(BigDecimal.valueOf(totalClaims));
+        claimBreakdownResDTO.setTotalAmountPaid(totalAmountPaid);
 
         // Return response
-        return utilities.successResponse(systemConfigs.getSuccessMessage(), claimReportDTO);
+        return utilities.successResponse(systemConfigs.getSuccessMessage(), claimBreakdownResDTO);
     }
 
 

@@ -31,8 +31,7 @@ public class ClaimsController {
         return claimsService.getClaims();
     }
 
-    @GetMapping("/claim-types")
-    @PreAuthorize("hasAnyAuthority('CAN_VIEW_CLAIM_TYPES','CUSTOMER','INSURER')")
+    @GetMapping("/customer/claim-types")
     public ResponseDTO getClaimTypes() throws JsonProcessingException {
         return claimsService.getClaimTypes();
     }

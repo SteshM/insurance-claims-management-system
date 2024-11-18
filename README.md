@@ -17,9 +17,19 @@ http://localhost:8080/allow/create-account
 ##Sample Response
 ```
 {
-  "firstName": "John",
-  "lastName": "Smith",
-  "age": 25
+    "statusCode": "00",
+    "statusMessage": "success",
+    "result": {
+        "id": 2,
+        "username": "stesh",
+        "fullName": "Stella Mbithe",
+        "phoneNumber": "555-12340765432189",
+        "email": "mbithe0@example.com",
+        "dateOfBirth": "1995-07-14T21:00:00.000+00:00",
+        "gender": "Female",
+        "name": "Stella Mbithe",
+        "active": true
+    }
 }
 ```
 ##Sample Request
@@ -41,9 +51,12 @@ http://localhost:8080/allow/login
     
 ```
 ```
+```
 ##Sample Request
 ```
+```
 http://localhost:8080/api/customer/claim
+
 ```
 ```
 ```
@@ -98,6 +111,50 @@ http://localhost:8080/api/customer/claim
 }
 ```    
 ```
+   
+```
+```
+```
+##Sample Request
+```
+```
+http://localhost:8080/api/customer/claim-types
+```
+```
+```
+
+
+```
+
+
+
+##Sample Response
+```
+```
+```
+```
+```
+
+{
+    "statusCode": "00",
+    "statusMessage": "Successfully retrieved claim types",
+    "result": [
+        {
+            "id": 1,
+            "name": "medical"
+        },
+        {
+            "id": 2,
+            "name": "vehicle"
+        },
+        {
+            "id": 3,
+            "name": "property"
+        }
+    ]
+}
+```    
+```
 ##Sample Request
 ```
 http://localhost:8080/api/insurer/claims
@@ -140,6 +197,144 @@ http://localhost:8080/api/insurer/claims
 ```
 ```
 ```
+```
+```
+
+##Sample Request
+```
+```
+
+
+http://localhost:8080/api/insurer/claim/1/workflow
+```
+```
+```
+
+
+{
+"assignedTo": 2,
+"stageName": "investigation"
+}
+```
+```
+
+##Sample Response
+```
+```
+```
+```
+
+
+{
+"statusCode": "00",
+"statusMessage": "success",
+"result": {
+"id": 1,
+"claim": {
+"id": 1,
+"policyNumber": "POL123431",
+"incidentDate": "2024-10-10T00:00:00.000+00:00",
+"amountClaimed": 8000.00,
+"claimStatus": {
+"id": 2,
+"name": "pending"
+},
+"claimType": {
+"id": 1,
+"name": "medical"
+},
+"attachments": [
+{
+"id": 1,
+"type": "medicalReport",
+"url": "https://example.com/report.pdf",
+"description": "This is the medical report"
+},
+{
+"id": 2,
+"type": "medicalReport",
+"url": "https://example.com/report.pdf",
+"description": "This is the medical report"
+}
+]
+},
+"assignedUser": {
+"id": 2,
+"username": "stesh",
+"fullName": "Stella Mbithe",
+"phoneNumber": "555-12340765432189",
+"email": "mbithe0@example.com",
+"dateOfBirth": "1995-07-14T21:00:00.000+00:00",
+"gender": "Female",
+"name": "Stella Mbithe",
+"active": true
+},
+"workflowStage": {
+"id": 1,
+"stageName": "investigation"
+},
+"workflowStatus": {
+"id": 1,
+"statusName": "in-progress"
+}
+}
+}
+```
+```
+```
+
+##Sample Request
+```
+```
+
+http://localhost:8080/api/insurer/claim/1/approval
+```
+```
+##Sample Response
+```
+```
+```
+
+{
+"statusCode": "00",
+"statusMessage": "Claim successfully approved.",
+"result": null
+}
+```
+```
+```
+
+##Sample Request
+```
+```
+
+http://localhost:8080/api/insurer/workflow-status```
+```
+```
+
+##Sample Response
+```
+```
+```
+```
+```
+{
+    "statusCode": "00",
+    "statusMessage": "success",
+    "result": [
+        {
+            "id": 1,
+            "statusName": "in-progress"
+        },
+        {
+            "id": 2,
+            "statusName": "completed"
+        }
+    ]
+}
+```
+```
+```
 ##Sample Request
 ```
 ```
@@ -170,88 +365,8 @@ http://localhost:8080/api/insurer/claim/1/investigation-report
 "result": null
 }
 ```
-```
-```
-##Sample Request
-```
-```
-http://localhost:8080/api/insurer/claim/1/workflow
-```
-```
-```
 
-{
-    "assignedTo": 2,
-    "stageName": "investigation"
-}
-```
-```
-```
-##Sample Response
-```
-```
-```
-
-{
-    "statusCode": "00",
-    "statusMessage": "success",
-    "result": {
-        "id": 1,
-        "claim": {
-            "id": 1,
-            "policyNumber": "POL123431",
-            "incidentDate": "2024-10-10T00:00:00.000+00:00",
-            "amountClaimed": 8000.00,
-            "claimStatus": {
-                "id": 2,
-                "name": "pending"
-            },
-            "claimType": {
-                "id": 1,
-                "name": "medical"
-            },
-            "attachments": [
-                {
-                    "id": 1,
-                    "type": "medicalReport",
-                    "url": "https://example.com/report.pdf",
-                    "description": "This is the medical report"
-                },
-                {
-                    "id": 2,
-                    "type": "medicalReport",
-                    "url": "https://example.com/report.pdf",
-                    "description": "This is the medical report"
-                }
-            ]
-        },
-        "assignedUser": {
-            "id": 2,
-            "username": "stesh",
-            "fullName": "Stella Mbithe",
-            "phoneNumber": "555-12340765432189",
-            "email": "mbithe0@example.com",
-            "dateOfBirth": "1995-07-14T21:00:00.000+00:00",
-            "gender": "Female",
-            "name": "Stella Mbithe",
-            "active": true
-        },
-        "workflowStage": {
-            "id": 1,
-            "stageName": "investigation"
-        },
-        "workflowStatus": {
-            "id": 1,
-            "statusName": "in-progress"
-        }
-    }
-}
-```
-```
-```
-```
 ##Sample Request
-```
 ```
 ```
 
@@ -270,13 +385,16 @@ http://localhost:8080/api/insurer/claim/1/approval
 }
 ```
 ```
+```
 
 
 ##Sample Request
 ```
 ```
 ```
+```
 http://localhost:8080/api/insurer/claim/1/disbursement
+```
 ```
 ```
 ```
@@ -306,6 +424,7 @@ http://localhost:8080/api/insurer/claim/1/disbursement
 ```
 ```
 ```
+```
 http://localhost:8080/api/insurer/claim/1/disbursement
 ```
 ```
@@ -330,21 +449,33 @@ http://localhost:8080/api/insurer/claim/1/disbursement
 ```
 ```
 ```
+
+
+```
+##Sample Request
+
+```
+```
+http://localhost:8080/analytics/insurer/claim-status-breakdown```
+```
+```
+```
+```
+##Sample Response
+```
+```
+```
+graph
+```
+```
+
 
 
 
 ##Sample Request
 ```
+http://localhost:8080/analytics/insurer/claim-type-breakdown```
 ```
-```
-http://localhost:8080/api/insurer/claim/1/disbursement
-```
-```
-```
-{
- "transactionReference": "TX1234567890"
-
-}
 ```
 ```
 ```
@@ -352,11 +483,155 @@ http://localhost:8080/api/insurer/claim/1/disbursement
 ```
 ```
 ```
-{
-    "statusCode": "00",
-    "statusMessage": "Payment successfully disbursed",
-    "result": null
-}
+pie chart
+```
+```
 ```
 
 
+```
+```
+```
+```
+##Sample Request
+```
+```
+```
+```
+http://localhost:8080/api/insurer/claim/status```
+```
+
+
+```
+
+```
+
+##Sample Response
+```
+```
+```
+```
+```
+
+{
+"statusCode": "00",
+"statusMessage": "success",
+"result": {
+"name": "approved",
+"totalClaims": 0,
+"totalAmountPaid": 0,
+"claimBreakdown": {}
+}
+}
+```
+```
+
+```
+```
+##Sample Request
+
+
+```
+
+
+http://localhost:8080/api/insurer/claim/type
+```
+
+```
+
+##Sample Response
+```
+```
+```
+
+{
+    "statusCode": "00",
+    "statusMessage": "success",
+    "result": {
+        "name": "medical",
+        "totalClaims": 1,
+        "totalAmountPaid": 8000.00
+    }
+}
+```
+```
+```
+```
+
+```
+##Sample Request
+```
+```
+
+
+http://localhost:8080/api/insurer/users
+```
+```
+
+##Sample Response
+```
+```
+```
+
+{
+    "statusCode": "00",
+    "statusMessage": "success",
+    "result": [
+        {
+            "id": 1,
+            "username": "jonah",
+            "fullName": "Johan Doe",
+            "phoneNumber": "555-1232",
+            "email": "johna@example.com",
+            "dateOfBirth": "1995-07-14T21:00:00.000+00:00",
+            "gender": "male",
+            "active": true
+        },
+        {
+            "id": 2,
+            "username": "stesh",
+            "fullName": "Stella Mbithe",
+            "phoneNumber": "555-12340765432189",
+            "email": "mbithe0@example.com",
+            "dateOfBirth": "1995-07-14T21:00:00.000+00:00",
+            "gender": "Female",
+            "active": true
+        }
+    ]
+}
+```
+
+```
+```
+##Sample Request
+```
+```
+
+
+http://localhost:8080/api/insurer/user/1
+```
+```
+
+
+##Sample Response
+
+```
+```
+```
+
+{
+    "statusCode": "00",
+    "statusMessage": "success",
+    "result": {
+        "id": 1,
+        "username": "jonah",
+        "fullName": "Johan Doe",
+        "phoneNumber": "555-1232",
+        "email": "johna@example.com",
+        "dateOfBirth": "1995-07-14T21:00:00.000+00:00",
+        "gender": "male",
+        "active": true
+    }
+}
+```
+```

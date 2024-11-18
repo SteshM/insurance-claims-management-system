@@ -15,6 +15,5 @@ public class UserResDTO {
     private String email;
     private Date dateOfBirth;
     private String gender;
-    private String name;
     private Boolean active;
 }
