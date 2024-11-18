@@ -51,7 +51,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers("/allow/**","http://localhost:8080/h2-console"
+                        .requestMatchers("/allow/**"
+                        ).permitAll()
+                        .requestMatchers("/h2-console/**"
                         ).permitAll()
                         .requestMatchers("/api/customers/**").hasAnyAuthority("CUSTOMER")
                         .requestMatchers("/api/insurer/**").hasAnyAuthority("insurer")
