@@ -20,8 +20,7 @@ public class AnalysisController {
     private final AnalysisService analysisService;
 
 
-    @GetMapping("/claim-type-breakdown")
-    @PreAuthorize("hasAuthority('CAN_VIEW_CLAIM_TYPE_BREAKDOWN')")
+    @GetMapping("insurer/claim-type-breakdown")
     public void getClaimTypeBreakdownChart(HttpServletResponse response) throws IOException {
         Map<String, Long> claimTypeData = analysisService.getClaimTypeBreakdown();
         byte[] chartBytes = chartService.generateClaimTypePieChart(claimTypeData);
@@ -30,8 +29,7 @@ public class AnalysisController {
         response.getOutputStream().write(chartBytes);
     }
 
-    @GetMapping("/claim-status-breakdown")
-    @PreAuthorize("hasAuthority('CAN_VIEW_CLAIM_STATUS_BREAKDOWN')")
+    @GetMapping("insurer/claim-status-breakdown")
     public ResponseEntity<byte[]> generateClaimStatusBreakdown() throws IOException {
         byte[] chartImage = analysisService.generateClaimStatusBreakdownChart();
         return ResponseEntity.ok()
