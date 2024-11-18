@@ -40,9 +40,13 @@ http://localhost:8080/allow/login
     }
     
 ```
+```
 ##Sample Request
 ```
-http://localhost:8080/api/customer/claim```
+http://localhost:8080/api/customer/claim
+```
+```
+```
 {
     "policyNumber": "POL123431",
     "name": "medical",
@@ -58,7 +62,12 @@ http://localhost:8080/api/customer/claim```
     ]
 }
 ```
+```
+
 ##Sample Response
+```
+```
+```
 ```
 
 {
@@ -96,6 +105,8 @@ http://localhost:8080/api/insurer/claims
 ```
 ```
 ##Sample Response
+```
+```
 ```
 
 {
@@ -151,6 +162,8 @@ http://localhost:8080/api/insurer/claim/1/investigation-report
 ```
 ```
 ```
+```
+```
 {
 "statusCode": "00",
 "statusMessage": "Investigation report successfully submitted.",
@@ -164,15 +177,21 @@ http://localhost:8080/api/insurer/claim/1/investigation-report
 ```
 http://localhost:8080/api/insurer/claim/1/workflow
 ```
+```
+```
+
 {
     "assignedTo": 2,
     "stageName": "investigation"
 }
 ```
 ```
+```
 ##Sample Response
 ```
 ```
+```
+
 {
     "statusCode": "00",
     "statusMessage": "success",
@@ -338,9 +357,6 @@ http://localhost:8080/api/insurer/claim/1/disbursement
     "statusMessage": "Payment successfully disbursed",
     "result": null
 }
-```
-```
-```
 ```
 
 
