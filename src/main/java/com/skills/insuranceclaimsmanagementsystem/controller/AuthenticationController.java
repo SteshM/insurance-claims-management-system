@@ -21,6 +21,8 @@ public class AuthenticationController {
     public ResponseDTO createAccount(@Valid @RequestBody UserDTO userDTO){
         return authenticationService.createAccount(userDTO);
     }
+
+
     @PostMapping("/login")
     public ResponseDTO login(@Valid @RequestBody LoginDTO loginDTO){
         return authenticationService.login(loginDTO);

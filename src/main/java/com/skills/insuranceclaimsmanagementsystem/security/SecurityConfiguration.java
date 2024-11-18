@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 @Setter
 @Getter
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -48,10 +48,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers("/api/**","/reports/**"
+                        .requestMatchers("/allow/**"
                         ).permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/customers/**").hasAnyAuthority("CUSTOMER")
+                        .requestMatchers("/api/insurer/**").hasAnyAuthority("INSURER")
+                        .anyRequest().authenticated()
                 )
+
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

@@ -173,7 +173,6 @@ public class ClaimsService {
             }
         });
 
-        // Proceed with the rest of the payment disbursement logic
         Payments payments = new Payments();
         payments.setPaymentDate(new Date());
         payments.setTransactionReference(paymentRequestDTO.getTransactionReference());

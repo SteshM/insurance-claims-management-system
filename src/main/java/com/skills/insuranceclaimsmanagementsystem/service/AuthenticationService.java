@@ -39,6 +39,7 @@ public class AuthenticationService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.getAuthorities());
     }
+
     public ResponseDTO createAccount(UserDTO userDTO) {
         Users user = new Users();
         modelMapper.map(userDTO, user);
@@ -53,7 +54,6 @@ public class AuthenticationService implements UserDetailsService {
 
 
     public ResponseDTO login(@Valid LoginDTO loginDTO) {
-        // Retrieve user by email
         Users user = dataService.findByUsername(loginDTO.getUsername());
         if (user == null) {
             return utilities.failedResponse(01, "Account doesn't exist, proceed to register", null);

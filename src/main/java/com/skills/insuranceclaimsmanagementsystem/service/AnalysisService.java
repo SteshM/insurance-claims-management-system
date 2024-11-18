@@ -27,20 +27,16 @@ public class AnalysisService {
     }
 
     public byte[] generateClaimStatusBreakdownChart() throws IOException {
-        // Step 1: Fetch claims data
         List<Claims> claims = dataService.fetchClaims();
 
-        // Step 2: Prepare data for the chart
         Map<String, Long> claimStatusBreakdown = claims.stream()
                 .collect(Collectors.groupingBy(claim -> claim.getClaimStatus().getName(), Collectors.counting()));
 
-        // Step 3: Create the dataset for the bar chart
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         claimStatusBreakdown.forEach((status, count) -> {
             dataset.addValue(count, "Claim Status", status);  // Adding data to dataset
         });
 
-        // Step 4: Generate the bar chart using JFreeChart
         JFreeChart chart = ChartFactory.createBarChart(
                 "Claim Status Breakdown", // Chart title
                 "Claim Status", // X-axis label
@@ -48,12 +44,10 @@ public class AnalysisService {
                 dataset // Dataset
         );
 
-        // Step 5: Convert the chart to a PNG image
         BufferedImage bufferedImage = chart.createBufferedImage(800, 600);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
 
-        // Step 6: Return the byte array representing the chart image
         return byteArrayOutputStream.toByteArray();
     }
 }

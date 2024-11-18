@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportsController {
     private final ReportsService reportsService;
 
-    @GetMapping("/claim/status")
-    @PreAuthorize("hasAuthority('CAN_VIEW_CLAIM_REPORT')")
+    @GetMapping("/insurer/claim/status")
     public ResponseDTO claimStatus(@RequestBody ClaimReportRequestDTO claimReportRequestDTO) {
         return reportsService.generateClaimReportByClaimStatus(claimReportRequestDTO);
     }
 
-    @GetMapping("/claim/type")
-    @PreAuthorize("hasAuthority('CAN_VIEW_CLAIM_TYPE_REPORT')")
+    @GetMapping("/insurer/claim/type")
     public ResponseDTO claimType(@RequestBody ClaimReportRequestDTO claimReportRequestDTO) {
         return reportsService.generateClaimReportByType(claimReportRequestDTO);
     }

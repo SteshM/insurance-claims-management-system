@@ -13,25 +13,22 @@ import org.springframework.web.bind.annotation.*;
 public class WorkflowController {
     private final WorkflowService workflowService;
 
-    @GetMapping("/workflow-status")
-    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW_STATUS')")
+    @GetMapping("/insurer/workflow-status")
     public ResponseDTO getWorkflowStatus() {
         return workflowService.getWorkflowStatus();
     }
 
-    @GetMapping("/workflow-stages")
-    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW_STAGES')")
+    @GetMapping("/insurer/workflow-stages")
     public ResponseDTO getWorkflowStages() {
         return workflowService.getWorkflowStages();
     }
-    @PostMapping("/claim/{id}/workflow")
-    @PreAuthorize("hasAuthority('CAN_INITIATE_WORKFLOW')")
+
+    @PostMapping("/insurer/claim/{id}/workflow")
     public ResponseDTO initiateWorkflow(@PathVariable int id, @RequestBody WorkflowRequestDTO workflowRequestDTO) {
         return workflowService.initiateWorkflow(id,workflowRequestDTO);
     }
 
-    @GetMapping("/claim/{id}/workflow")
-    @PreAuthorize("hasAuthority('CAN_VIEW_WORKFLOW')")
+    @GetMapping("/insurer/claim/{id}/workflow")
     public ResponseDTO getWorkflow(@PathVariable int id) {
         return workflowService.retrieveClaimHistory(id);
     }
