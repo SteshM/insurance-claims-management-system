@@ -49,7 +49,7 @@ public class ClaimsService {
             return attachment;
         }).toList();
         claim.setAttachments(attachments);
-        ClaimStatus claimStatus = dataService.findClaimStatusByName("submitted");
+        ClaimStatus claimStatus = dataService.findClaimStatusByName(systemConfigs.getSubmittedStatus());
         claim.setClaimStatus(claimStatus);
         var savedClaim = dataService.saveClaim(claim);
         var claimResDTO = modelMapper.map(savedClaim,ClaimResDTO.class);
@@ -147,7 +147,7 @@ public class ClaimsService {
         Claims claim = claimOptional.get();
 
         // Update the claim's status to "Approved"
-        ClaimStatus approvedStatus = dataService.findClaimStatusByName("approved");
+        ClaimStatus approvedStatus = dataService.findClaimStatusByName(systemConfigs.getApprovedStatus());
         claim.setClaimStatus(approvedStatus);
         claim.setApprovalDate(new Date());
         dataService.saveClaim(claim);
@@ -184,19 +184,19 @@ public class ClaimsService {
         payments.setClaim(claim);
 
         // Set payment status to "Pending"
-        PaymentStatus paymentStatus = dataService.findByStatusName("disbursed");
+        PaymentStatus paymentStatus = dataService.findByStatusName(systemConfigs.getDisbursedStatus());
         payments.setStatus(paymentStatus);
 
         // Save the payment and update claim status
         dataService.savePayment(payments);
-        claim.setClaimStatus(dataService.findClaimStatusByName("settled"));
+        claim.setClaimStatus(dataService.findClaimStatusByName(systemConfigs.getSettledStatus()));
         dataService.saveClaim(claim);
         return utilities.successResponse("Payment successfully disbursed", null);
     }
 
 
     public void completeWorkflow(Workflow workflow){
-        WorkflowStatus completedStatus = dataService.findByWorkStatus("completed");
+        WorkflowStatus completedStatus = dataService.findByWorkStatus(systemConfigs.getCompletedStatus());
         workflow.setWorkflowStatus(completedStatus);
         dataService.saveWorkflow(workflow);
 

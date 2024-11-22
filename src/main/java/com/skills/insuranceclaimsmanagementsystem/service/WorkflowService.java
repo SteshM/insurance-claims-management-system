@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,12 +50,12 @@ public class WorkflowService {
 
         WorkflowStage workflowStage = dataService.findByStageName(workflowRequestDTO.getStageName());
         workflow.setWorkflowStage(workflowStage);
-        WorkflowStatus workflowStatus = dataService.findByWorkStatus("in-progress");
+        WorkflowStatus workflowStatus = dataService.findByWorkStatus(systemConfigs.getInProgressStatus());
         workflow.setWorkflowStatus(workflowStatus);
         Optional<Users> users = dataService.findByUserId(workflowRequestDTO.getAssignedTo());
         workflow.setAssignedUser(users.get());
         var initiatedWorkflow = dataService.saveWorkflow(workflow);
-        ClaimStatus claimStatus = dataService.findClaimStatusByName("pending");
+        ClaimStatus claimStatus = dataService.findClaimStatusByName(systemConfigs.getPendingStatus());
         claim.setClaimStatus(claimStatus);
         dataService.saveClaim(claim);
         if (workflowRequestDTO.getStageName().equalsIgnoreCase("disbursement")){
@@ -65,7 +63,7 @@ public class WorkflowService {
             var payment = new Payments();
             payment.setClaim(claim);
             payment.setAmount(claim.getAmountClaimed());
-            payment.setStatus(dataService.findByStatusName("pending"));
+            payment.setStatus(dataService.findByStatusName(systemConfigs.getPendingStatus()));
             dataService.savePayment(payment);
         }
         var workflowResDTO = modelMapper.map(initiatedWorkflow, WorkflowResDTO.class);
