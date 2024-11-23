@@ -21,36 +21,34 @@ public class ReportsService {
     private final Utilities utilities;
     private final SystemConfigs systemConfigs;
 
-
     public ResponseDTO generateClaimReportByClaimStatus(ClaimReportRequestDTO claimReportRequestDTO) {
         List<Claims> claims = dataService.fetchClaims();
 
-        //Filter claims with 'approved' status
-        List<Claims> approvedClaims = claims.stream()
+        // Filter claims based on the requested claim status
+        List<Claims> filteredClaims = claims.stream()
                 .filter(claim -> claim.getClaimStatus().getName().equalsIgnoreCase(claimReportRequestDTO.getName()))
                 .toList();
 
-        //Calculate total number of claims and total amount paid
-        int totalClaims = approvedClaims.size();
-        BigDecimal totalAmountPaid = approvedClaims.stream()
+        // Calculate the total number of claims and total amount paid
+        int totalClaims = filteredClaims.size();
+        BigDecimal totalAmountPaid = filteredClaims.stream()
                 .map(Claims::getAmountClaimed)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        //Breakdown by claim type
+        // Breakdown by claim type
         LinkedHashMap<String, Integer> claimBreakdown = new LinkedHashMap<>();
-        for (Claims claim : approvedClaims) {
-            String claimTypeName = claim.getClaimType().getName(); // Only get the name as a String
+        filteredClaims.forEach(claim -> {
+            String claimTypeName = claim.getClaimType().getName(); // Get the name of the claim type
             claimBreakdown.put(claimTypeName, claimBreakdown.getOrDefault(claimTypeName, 0) + 1); // Increment count for this claim type
-        }
+        });
 
-        //Prepare ClaimReportDTO
+        // Prepare ClaimReportDTO with the breakdown
         ClaimReportDTO claimReportDTO = new ClaimReportDTO();
         claimReportDTO.setName(claimReportRequestDTO.getName());
         claimReportDTO.setTotalClaims(BigDecimal.valueOf(totalClaims));
         claimReportDTO.setTotalAmountPaid(totalAmountPaid);
         claimReportDTO.setClaimBreakdown(claimBreakdown);
 
-        //  Return response
         return utilities.successResponse(systemConfigs.getSuccessMessage(), claimReportDTO);
     }
 
@@ -68,7 +66,6 @@ public class ReportsService {
         BigDecimal totalAmountPaid = filteredClaims.stream()
                 .map(Claims::getAmountClaimed)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
 
         // Prepare ClaimReportDTO
         ClaimBreakdownResDTO claimBreakdownResDTO = new ClaimBreakdownResDTO();

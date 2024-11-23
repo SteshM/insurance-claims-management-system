@@ -21,8 +21,7 @@ public class ClaimsController {
        return claimsService.submitClaim(claimRequestDTO);
 
     }
-    @GetMapping("/claim/{id}")
-    @PreAuthorize("hasAnyAuthority('CAN_VIEW_CLAIM','CUSTOMER','INSURER')")
+    @GetMapping("insurer/claim/{id}")
     public ResponseDTO getClaim(@PathVariable int id){
         return claimsService.getClaim(id);
     }
